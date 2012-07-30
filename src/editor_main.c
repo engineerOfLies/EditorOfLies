@@ -17,6 +17,7 @@ along with the EOL game engine.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*editor includes*/
 #include "editor_header.h"
+#include "editor_workspace.h"
 
 /*eol includes*/
 #include <eol.h>
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
   done = 0;
   eol_mouse_show();
   eol_lighting_setup_rep_plot();
+  editor_workspace();
   editor_header_window();
   do
   {
