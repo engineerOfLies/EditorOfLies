@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
   done = 0;
   eol_mouse_show();
   eol_lighting_setup_rep_plot();
+  editor_header_window();
   do
   {
     eol_input_update();
