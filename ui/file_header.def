@@ -1,0 +1,14 @@
+#editor header definition
+name:         header
+rect:         0,0,-1,64
+canHasFocus:  1
+drawGeneric:  1
+components:
+  - button:
+      id:         1
+      rect:       0.01,0.1,1,1
+      hotkey:     ALT F1
+      justify:    CENTER
+      buttonText: File
+      buttonType: STOCK
+  
