@@ -1,14 +1,35 @@
 #editor header definition
 name:         header
-rect:         0,0,-1,64
-canHasFocus:  1
-drawGeneric:  1
+rect:         0,0,-1,48
+canHasFocus:  True
+drawGeneric:  True
 components:
-  - button:
-      id:         1
-      rect:       0.01,0.1,1,1
-      hotkey:     ALT F1
-      justify:    CENTER
-      buttonText: File
-      buttonType: STOCK
+  - type:       BUTTON
+    name:       file_button
+    id:         0
+    rect:       0.01,0.1,1,1
+    hotkey:     ALT F1
+    justify:    CENTER
+    buttonText: File
+    buttonType: STOCK
+  - type:       BUTTON
+    name:       keys_button
+    id:         1
+    rect:       0.8,0.1,1,1
+    hotkey:     ALT F1
+    justify:    CENTER
+    buttonText: Edit Keys
+    buttonType: STOCK
+  - type:       LABEL
+    id:         10
+    name:       title
+    rect:       0.5,0.3,1,1
+    text:       Editor Of Lies
+    justify:    CENTER
+    wordWrap:   False
+# fontSize and fontName are mutually exclusive
+    fontSize:   4
+#    fontName:
+    color:      1,1,1
+    alpha:      1
   
