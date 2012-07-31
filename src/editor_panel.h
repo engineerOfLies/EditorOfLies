@@ -1,5 +1,5 @@
-#ifndef __EDITOR_HEADER__
-#define __EDITOR_HEADER__
+#ifndef __EDITOR_PANEL__
+#define __EDITOR_PANEL__
 /*
 Copyright 2012 EngineerOfLies
 This file is part of the Engine of Lies game engine library and Editor of Lies
@@ -23,6 +23,6 @@ see <http://www.gnu.org/licenses/>.
 #include <eol_window.h>
 
 
-void editor_header_window();
+void editor_panel_window();
 
 #endif

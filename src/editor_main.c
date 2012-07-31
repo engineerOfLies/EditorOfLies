@@ -25,9 +25,10 @@ along with the EOL game engine.  If not, see <http://www.gnu.org/licenses/>.
 #include <eol_input.h>
 #include <eol_window.h>
 #include <eol_mouse.h>
+#include <eol_level.h>
+#include <eol_entity.h>
 #include <eol_dialog.h>
 #include <eol_lighting.h>
-#include <eol_camera.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -49,9 +50,6 @@ int main(int argc, char *argv[])
     }
   }
   Init_All(argv[0]);
-  eol_camera_config();
-  eol_camera_set_height(20);
-  eol_camera_init();
   done = 0;
   eol_mouse_show();
   eol_lighting_setup_rep_plot();
@@ -83,6 +81,10 @@ int main(int argc, char *argv[])
 void Init_All(const char *argv)
 {
   eol_init(EOL_ALL);
+  eol_entity_config();
+  eol_entity_init();
+  eol_level_config();
+  eol_level_init();
 }
 
 /*eol @ eof*/

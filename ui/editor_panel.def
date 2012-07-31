@@ -1,17 +1,9 @@
-#editor workspace definition
-name:         workspace
+#editor panel definition
+name:         edit_panel
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
-rect:         0,48,-100,0
+rect:         -100,48,0,0
 canHasFocus:  True
 drawGeneric:  True
-components:
-  - type:       BUTTON
-    name:       test
-    id:         0
-    rect:       0.5,0.1,1,1
-    hotkey:     ALT F1
-    justify:    CENTER
-    buttonText: test
-    buttonType: STOCK
+#components:
   
