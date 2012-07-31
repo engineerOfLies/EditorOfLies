@@ -41,7 +41,8 @@ void editor_header_draw(eolWindow *win)
 void editor_header_window()
 {
   eolWindow *win;
-  win = eol_window_load_from_file("ui/file_header.def");
+  win = eol_window_load_from_file("ui/editor_header.def");
+  if (win == NULL)return;
   win->update = editor_header_update;
   win->draw = editor_header_draw;
 

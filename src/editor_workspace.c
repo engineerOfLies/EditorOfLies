@@ -70,7 +70,8 @@ void editor_workspace()
 {
   eolWindow *win;
   editorWorkspaceData *data;
-  win = eol_window_load_from_file("ui/workspace.def");
+  win = eol_window_load_from_file("ui/editor_workspace.def");
+  if (win == NULL)return;
   win->update = editor_workspace_update;
   win->draw = editor_workspace_draw;
   win->custom_delete = editor_workspace_delete;

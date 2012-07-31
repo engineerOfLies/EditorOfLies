@@ -42,6 +42,7 @@ void editor_panel_window()
 {
   eolWindow *win;
   win = eol_window_load_from_file("ui/editor_panel.def");
+  if (win == NULL)return;
   win->update = editor_panel_update;
   win->draw = editor_panel_draw;
   
