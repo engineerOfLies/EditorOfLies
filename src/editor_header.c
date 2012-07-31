@@ -11,11 +11,11 @@
 
 /*function definitions*/
 
-void editor_header_update(eolWindow *win,GList *updates)
+eolBool editor_header_update(eolWindow *win,GList *updates)
 {
   GList *c;
   eolComponent *comp = NULL;
-  if ((win == NULL)||(updates == NULL))return;
+  if ((win == NULL)||(updates == NULL))return eolFalse;
   
   for (c = updates;c != NULL;c = c->next)
   {
@@ -25,12 +25,13 @@ void editor_header_update(eolWindow *win,GList *updates)
     {
       case 0:
         fprintf(stdout,"File pressed!\n");
-        break;
+        return eolTrue;
       case 1:
         fprintf(stdout,"Edit Keys pressed!\n");
-        break;
+        return eolTrue;
     }
   }
+  return eolFalse;
 }
 
 void editor_header_draw(eolWindow *win)

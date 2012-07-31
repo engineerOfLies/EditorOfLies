@@ -13,11 +13,11 @@
 
 /*function definitions*/
 
-void editor_workspace_update(eolWindow *win,GList *updates)
+eolBool editor_workspace_update(eolWindow *win,GList *updates)
 {
   GList *c;
   eolComponent *comp = NULL;
-  if ((win == NULL)||(updates == NULL))return;
+  if ((win == NULL)||(updates == NULL))return eolFalse;
   
   for (c = updates;c != NULL;c = c->next)
   {
@@ -26,11 +26,12 @@ void editor_workspace_update(eolWindow *win,GList *updates)
     switch (comp->id)
     {
       case 0:
-        break;
+        return eolTrue;
       case 1:
-        break;
+        return eolTrue;
     }
   }
+  return eolFalse;
 }
 
 void editor_workspace_draw(eolWindow *win)
