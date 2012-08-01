@@ -13,7 +13,7 @@ components:
     name:       file_button
     id:         0
     rect:       0.01,0.1,1,1
-    hotkey:     ALT F1
+    hotkey:     F1
     justify:    CENTER
     buttonText: File
     buttonType: STOCK
@@ -21,7 +21,7 @@ components:
     name:       keys_button
     id:         1
     rect:       0.8,0.1,1,1
-    hotkey:     ALT F1
+    hotkey:     F2
     justify:    CENTER
     buttonText: Edit Keys
     buttonType: STOCK
