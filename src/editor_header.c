@@ -1,3 +1,6 @@
+#include "editor_header.h"
+#include "editor_filemenu.h"
+
 #include <eol_dialog.h>
 #include <eol_input.h>
 #include <eol_logger.h>
@@ -42,14 +45,7 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
     switch (comp->id)
     {
       case 0:
-        if (!header)return eolTrue;
-        eol_dialog_text_prompt(header->title,
-                               EOLLINELEN,
-                               0,  /*0 means no limit*/
-                               "Enter New Title",
-                               win,
-                               editor_on_title_change,
-                               NULL);
+        editor_file_menu_window();
         return eolTrue;
       case 1:
         fprintf(stdout,"Edit Keys pressed!\n");

@@ -71,7 +71,8 @@ int main(int argc, char *argv[])
     eol_graphics_frame_end();
 
     if((eol_input_quit_check()) ||
-      ((eol_input_is_key_pressed(SDLK_F4)) && (eol_input_is_mod_held(KMOD_ALT))))
+      ((eol_input_is_key_released(SDLK_F4)) && (eol_input_is_mod_held(KMOD_ALT))) ||
+      ((eol_input_is_key_released(SDLK_q)) && (eol_input_is_mod_held(KMOD_ALT))))
     {
       eol_dialog_quit();
     }
