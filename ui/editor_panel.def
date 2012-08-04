@@ -2,9 +2,76 @@
 name:         edit_panel
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
-rect:         -100,48,0,0
+rect:         -250,48,0,0
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  True
-#components:
-  
+components:
+  - type:       LABEL
+    id:         10
+    name:       title
+    rect:       0.5,0.02,1,1
+    text:       Layer Editor
+    justify:    CENTER
+    wordWrap:   False
+# fontSize and fontName are mutually exclusive
+    fontSize:   3
+#    fontName:
+    color:      1,1,1
+    alpha:      1
+  - type:         BUTTON
+    name:         layers_button
+    id:           1
+    rect:         0.01,0.05,48,48
+    hotkey:       1
+    justify:      CENTER
+    buttonText: 
+    buttonImage:  images/UI/layers_btn.png
+    buttonHigh:   images/UI/layers_btn_high.png
+    buttonHit:    images/UI/layers_btn_hit.png
+    buttonType:   CUSTOM
+  - type:         BUTTON
+    name:         background_button
+    id:           2
+    rect:         0.21,0.05,48,48
+    hotkey:       2
+    justify:      CENTER
+    buttonText: 
+    buttonImage:  images/UI/backgrounds_btn.png
+    buttonHigh:   images/UI/backgrounds_btn_high.png
+    buttonHit:    images/UI/backgrounds_btn_hit.png
+    buttonType:   CUSTOM
+  - type:         BUTTON
+    name:         tile_button
+    id:           3
+    rect:         0.41,0.05,48,48
+    hotkey:       3
+    justify:      CENTER
+    buttonText: 
+    buttonImage:  images/UI/tiles_btn.png
+    buttonHigh:   images/UI/tiles_btn_high.png
+    buttonHit:    images/UI/tiles_btn_hit.png
+    buttonType:   CUSTOM
+  - type:         BUTTON
+    name:         mask_button
+    id:           4
+    rect:         0.61,0.05,48,48
+    hotkey:       4
+    justify:      CENTER
+    buttonText: 
+    buttonImage:  images/UI/mask_btn.png
+    buttonHigh:   images/UI/mask_btn_high.png
+    buttonHit:    images/UI/mask_btn_hit.png
+    buttonType:   CUSTOM
+  - type:         BUTTON
+    name:         spawn_button
+    id:           5
+    rect:         0.81,0.05,48,48
+    hotkey:       5
+    justify:      CENTER
+    buttonText: 
+    buttonImage:  images/UI/spawn_btn.png
+    buttonHigh:   images/UI/spawn_btn_high.png
+    buttonHit:    images/UI/spawn_btn_hit.png
+    buttonType:   CUSTOM
+
