@@ -24,7 +24,7 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
     switch (comp->id)
     {
       case 0:
-        fprintf(stdout,"File pressed!\n");
+        eol_window_free(&win);
         return eolTrue;
       case 1:
         fprintf(stdout,"Edit Keys pressed!\n");

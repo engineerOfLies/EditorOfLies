@@ -17,7 +17,7 @@ eolBool editor_file_menu_update(eolWindow *win,GList *updates)
 {
   GList *c;
   eolComponent *comp = NULL;
-  if ((win == NULL)||(updates == NULL))return eolFalse;
+  if (win == NULL)return eolFalse;
   for (c = updates;c != NULL;c = c->next)
   {
     if (c->data == NULL)continue;
@@ -25,16 +25,21 @@ eolBool editor_file_menu_update(eolWindow *win,GList *updates)
     switch (comp->id)
     {
       case 1:/*new*/
+        eol_window_free(&win);
         return eolTrue;
       case 2:/*save*/
+        eol_window_free(&win);
         return eolTrue;
       case 3:/*save as*/
+        eol_window_free(&win);
         return eolTrue;
       case 4:
         eol_dialog_quit();
+        eol_window_free(&win);
         return eolTrue;
     }
   }
+  eol_window_free_if_outside_click(&win);
   return eolFalse;
 }
 

@@ -1,5 +1,5 @@
-#ifndef __EDITOR_HEADER__
-#define __EDITOR_HEADER__
+#ifndef __EDITOR_FILEMENU__
+#define __EDITOR_FILEMENU__
 /*
 Copyright 2012 EngineerOfLies
 This file is part of the Engine of Lies game engine library and Editor of Lies

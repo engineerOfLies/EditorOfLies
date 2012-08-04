@@ -4,7 +4,7 @@ name:         file_menu
 #bottom by the number.  so rect.x = -100 means to draw x = screen.w - x
 # width or height of 0 means fill screen.  Anything less than 0 means 
 # full screen less than the width specified
-rect:         64,54,110,250
+rect:         64,54,140,180
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  False
@@ -12,7 +12,7 @@ components:
   - type:       LABEL
     id:         10
     name:       title
-    rect:       0.5,0.1,1,1
+    rect:       0.5,0.05,1,1
     text:       File...
     justify:    CENTER
     wordWrap:   False
@@ -24,36 +24,36 @@ components:
   - type:       BUTTON
     name:       new_button
     id:         1
-    rect:       0.01,0.2,1,1
+    rect:       0.01,0.2,138,1
     hotkey:     n
     hotkeymod:  LAlt
     justify:    CENTER
-    buttonText: New
-    buttonType: STOCK
+    buttonText: New Level
+    buttonType: TEXT
   - type:       BUTTON
     name:       save_button
     id:         2
-    rect:       0.01,0.4,1,1
+    rect:       0.01,0.4,138,1
     hotkey:     s
     hotkeymod:  LCtrl
     justify:    CENTER
-    buttonText: Save
-    buttonType: STOCK
+    buttonText: Save Level
+    buttonType: TEXT
   - type:       BUTTON
     name:       save_as_button
     id:         3
-    rect:       0.01,0.6,1,1
+    rect:       0.01,0.6,138,1
     hotkey:     s
     hotkeymod:  LAlt
     justify:    CENTER
-    buttonText: Save as...
-    buttonType: STOCK
+    buttonText: Save Level As
+    buttonType: TEXT
   - type:       BUTTON
     name:       quit_button
     id:         4
-    rect:       0.01,0.8,1,1
+    rect:       0.01,0.8,138,1
     hotkey:     q
     hotkeymod:  LAlt
     justify:    CENTER
-    buttonText: Quit
-    buttonType: STOCK
+    buttonText: Quit Editor
+    buttonType: TEXT
