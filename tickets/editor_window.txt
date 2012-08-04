@@ -1,0 +1,9 @@
+Make a window definition editor.
+
+As part of the level editor or a stand alone program, we should make a graphical
+editor that can put together standard windows and add components.
+
+Dependant on: eol_config_save.txt
+assigned:
+estimate:
+reward: Strange Potion

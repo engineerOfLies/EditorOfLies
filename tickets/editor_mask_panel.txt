@@ -1,0 +1,9 @@
+make editor mask panel
+
+Options to load a mask mesh and adjust its position in the x/y plane.
+Option to scale it and rotate it
+Option to snap it to the orientation of a background model.
+
+depends on: background selector
+assigned:
+reward: urban lobster sadle

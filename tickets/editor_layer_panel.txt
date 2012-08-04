@@ -1,0 +1,8 @@
+layer editor panel
+THe layer editor panel needs definition.  Right now it is just a stub.
+It should follow the markup: add/remove and move layers.  Edit layer info
+such as name, keys, 
+
+assigned:
+estimate:
+reward: A fortune cookie [cursed]

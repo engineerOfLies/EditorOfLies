@@ -1,0 +1,9 @@
+make a background selector dialog
+
+Need a dialog for the editor to select backgrounds from the loaded ones.
+
+
+depends on: eol_dialog_list
+assigned:
+estiamte:
+reward: slightly used taco
