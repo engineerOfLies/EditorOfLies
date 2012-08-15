@@ -34,6 +34,7 @@ void editor_on_title_change(void *data)
 eolBool editor_header_update(eolWindow *win,GList *updates)
 {
   GList *c;
+  eolLine title;
   eolComponent *comp = NULL;
   editorHeaderData *header = NULL;
   if ((win == NULL)||(updates == NULL))return eolFalse;
@@ -49,6 +50,10 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
         return eolTrue;
       case 1:
         fprintf(stdout,"Edit Keys pressed!\n");
+        return eolTrue;
+      case 4:
+        sprintf(title,"slider set to %f",eol_slider_get_position(comp));
+        eol_label_set_text(eol_window_get_component_by_id(win,10),title);
         return eolTrue;
     }
   }
