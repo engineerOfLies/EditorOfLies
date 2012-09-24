@@ -36,3 +36,10 @@
 #kate backups
 *~
 
+#docs
+html/*
+images/*
+models/*
+
+#binary
+editoroflies
