@@ -74,9 +74,4 @@ components:
     buttonHigh:   images/UI/spawn_btn_high.png
     buttonHit:    images/UI/spawn_btn_hit.png
     buttonType:   CUSTOM
-  - type:         LIST
-    listType:     text
-    name:         test_list
-    id:           6
-    rect:         0,0.175,0.5,100
 

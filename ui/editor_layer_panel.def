@@ -6,4 +6,11 @@ rect:         -250,150,0,0
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  True
-#components:
+components:
+  - type:         LIST
+    listType:     text
+    name:         test_list
+    id:           6
+    rect:         0,0,0.9,400
+    showVSlider:  true
+    showHSlider:  false
