@@ -42,4 +42,14 @@ components:
     rect:       0.25,0.5,150,16
     sliderType: COMMON
     barColor:   0,0,0
-  
+  - type:       PERCENT
+    name:       test_bar
+    id:         5
+    rect:       128,10,100,0.7
+    vertical:   true
+    ascending:  true
+    percent:    0
+    statusColor:  1,0,1
+    backgroundColor: 0,1,0
+    statusAlpha:  1
+    backgroundAlpha:  0.5
