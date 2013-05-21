@@ -1,5 +1,6 @@
 #include "editor_header.h"
 #include "editor_filemenu.h"
+#include "editor_keyedit.h"
 
 #include <eol_dialog.h>
 #include <eol_input.h>
@@ -49,10 +50,11 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
         editor_file_menu_window();
         return eolTrue;
       case 1:
+	editor_key_edit_window();
         return eolTrue;
       case 4:
-        eol_component_percent_bar_set(eol_window_get_component_by_id(win,5),
-                                      eol_slider_get_position(comp));
+        sprintf(title,"slider set to %f",eol_slider_get_position(comp));
+        eol_label_set_text(eol_window_get_component_by_id(win,10),title);
         return eolTrue;
     }
   }

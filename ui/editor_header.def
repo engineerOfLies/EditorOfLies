@@ -21,35 +21,37 @@ components:
     name:       keys_button
     id:         1
     rect:       0.8,0.1,1,1
-    hotkey:     F2
+    hotkey:     F12
     justify:    CENTER
     buttonText: Edit Keys
     buttonType: STOCK
   - type:       LABEL
     id:         10
     name:       title
-    rect:       0.5,0.3,1,1
+    rect:       0.5,0.1,1,1
     text:       Editor Of Lies
     justify:    CENTER
     wordWrap:   False
     fontSize:   4
     color:      1,1,1
     alpha:      1
-  - type:       SLIDER
-    name:       test_slider
-    vertical:   false
-    id:         4
-    rect:       0.25,0.5,150,16
-    sliderType: COMMON
-    barColor:   0,0,0
-  - type:       PERCENT
-    name:       test_bar
-    id:         5
-    rect:       128,10,100,0.7
-    vertical:   true
-    ascending:  true
-    percent:    0
-    statusColor:  1,0,1
-    backgroundColor: 0,1,0
-    statusAlpha:  1
-    backgroundAlpha:  0.5
+  - type:       LABEL
+    id:		11
+    name:       level_name
+    text:	catacombs_level_4
+    rect:       0.2,0.5,150,16
+    justify:    RIGHT
+    wordWrap:   False
+    fontSize:   3
+    color:      1,1,1
+    alpha:      1
+  - type:       BUTTON
+    name:       file_button
+    id:         2
+    rect:       0.205,0.5,1,1
+    hotkey:     F2
+    justify:    LEFT
+    buttonText: Rename
+    buttonType: TEXT
+
+  

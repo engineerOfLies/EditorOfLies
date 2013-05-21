@@ -1,0 +1,33 @@
+#editor file menu definition
+name:         file_menu
+# a negative x or y position means to draw from the right or 
+#bottom by the number.  so rect.x = -100 means to draw x = screen.w - x
+# width or height of 0 means fill screen.  Anything less than 0 means 
+# full screen less than the width specified
+rect:         0.5,128,800,500
+centerLeftRight: true
+cemterTopBottom: true
+canHasFocus:  True
+drawGeneric:  True
+passesInput:  False
+components:
+  - type:       LABEL
+    id:         10
+    name:       title
+    rect:       0.5,0.05,1,1
+    text:       Edit Keys
+    justify:    CENTER
+    wordWrap:   False
+# fontSize and fontName are mutually exclusive
+    fontSize:   3
+#    fontName:
+    color:      1,1,1
+    alpha:      1
+  - type:       BUTTON
+    name:       done
+    id:         1
+    rect:       0.85,0.9,1,1
+    hotkey:     ENTER
+    justify:    CENTER
+    buttonText: Done
+    buttonType: STOCK
