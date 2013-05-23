@@ -14,3 +14,11 @@ components:
     rect:         2,2,0.9,200
     showVSlider:  true
     showHSlider:  false
+  - type:         SLIDER
+    name:         test_slider
+    id:           200
+    rect:         2,202,15,200
+    vertical:     true
+    barColor:     1,0.4,.3
+    sliderType:   COMMON
+    startPosition: 0

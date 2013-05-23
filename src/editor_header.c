@@ -1,6 +1,7 @@
 #include "editor_header.h"
 #include "editor_filemenu.h"
 #include "editor_keyedit.h"
+#include "editor_workspace.h"
 
 #include <eol_dialog.h>
 #include <eol_input.h>
@@ -10,8 +11,7 @@
 
 typedef struct
 {
-  eolLine title;
-  
+  EditorLevelData *levelData;
 }editorHeaderData;
 
 /*local global variabls*/
@@ -27,7 +27,7 @@ void editor_on_title_change(void *data)
   header = (editorHeaderData *)win->customData;
   if (!header)return;
   labelComp = eol_window_get_component_by_id(win,10);
-  eol_label_set_text(labelComp,header->title);
+  eol_label_set_text(labelComp,header->levelData->level->idName);
 }
 
 /*function definitions*/
@@ -50,11 +50,7 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
         editor_file_menu_window();
         return eolTrue;
       case 1:
-	editor_key_edit_window();
-        return eolTrue;
-      case 4:
-        sprintf(title,"slider set to %f",eol_slider_get_position(comp));
-        eol_label_set_text(eol_window_get_component_by_id(win,10),title);
+        editor_key_edit_window(header->levelData->level->keys);
         return eolTrue;
     }
   }
@@ -65,15 +61,18 @@ void editor_header_draw(eolWindow *win)
 {
 }
 
-void editor_header_window()
+void editor_header_window(EditorLevelData *levelData)
 {
   eolWindow *win;
+  editorHeaderData * headerData;
   win = eol_window_load_from_file("ui/editor_header.def");
   if (win == NULL)return;
   win->update = editor_header_update;
   win->draw = editor_header_draw;
   win->customData = malloc(sizeof(editorHeaderData));
   memset(win->customData,0,sizeof(editorHeaderData));
+  headerData = (editorHeaderData*)win->customData;
+  headerData->levelData = levelData;
 }
 
 

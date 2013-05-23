@@ -30,6 +30,7 @@ along with the EOL game engine.  If not, see <http://www.gnu.org/licenses/>.
 #include <eol_entity.h>
 #include <eol_dialog.h>
 #include <eol_lighting.h>
+#include <eol_logger.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
 {
   int done;
   int i;
+  EditorLevelData * levelData;
   for(i = 1;i < argc;i++)
   {
     if(strcmp(argv[i],"-fs")== 0)
@@ -54,9 +56,15 @@ int main(int argc, char *argv[])
   done = 0;
   eol_mouse_show();
   eol_lighting_setup_rep_plot();
-  editor_workspace();
-  editor_panel_window();
-  editor_header_window();
+  levelData = editor_workspace();
+  if (!levelData)
+  {
+    eol_logger_message(EOL_LOG_FATAL,"main: failed to get valid working level data\n");
+    exit(0);
+    return 0;
+  }
+  editor_panel_window(levelData);
+  editor_header_window(levelData);
   do
   {
     eol_input_update();

@@ -1,3 +1,4 @@
+#include "editor_workspace.h"
 #include <eol_dialog.h>
 #include <eol_level.h>
 #include <eol_entity.h>
@@ -6,12 +7,6 @@
 #include <eol_logger.h>
 #include <eol_graphics.h>
 #include <eol_window.h>
-
-typedef struct
-{
-  eolLevel *level;
-  eolLevelLayer *activeLayer;
-}editorWorkspaceData;
 
 /*local global variabls*/
 
@@ -58,33 +53,34 @@ void editor_workspace_draw(eolWindow *win)
 
 void editor_workspace_delete(void *genericdata)
 {
-  editorWorkspaceData *data;
+  EditorLevelData *data;
   if (!genericdata)return;
-  data = (editorWorkspaceData *)genericdata;
+  data = (EditorLevelData *)genericdata;
   eol_level_free(&data->level);
-  memset(data,0,sizeof(editorWorkspaceData));
+  memset(data,0,sizeof(EditorLevelData));
   free(data);
 }
 
-void editor_workspace()
+EditorLevelData *editor_workspace()
 {
   eolWindow *win;
-  editorWorkspaceData *data;
+  EditorLevelData *data;
   win = eol_window_load_from_file("ui/editor_workspace.def");
-  if (win == NULL)return;
+  if (win == NULL)return NULL;
   win->update = editor_workspace_update;
   win->draw = editor_workspace_draw;
   win->custom_delete = editor_workspace_delete;
-  win->customData = malloc(sizeof(editorWorkspaceData));
-  eol_camera_config();
-  eol_camera_init();
+  win->customData = malloc(sizeof(EditorLevelData));
   if (win->customData == NULL)
   {
     eol_logger_message(EOL_LOG_ERROR,"editor_workspace: failed to allocate workspace data\n");
-    return;
+    return NULL;
   }
-  data = (editorWorkspaceData*)win->customData;
+  data = (EditorLevelData*)win->customData;
   data->level = editor_workspace_new_level();
+  eol_camera_config();
+  eol_camera_init();
+  return data;
 }
 
 eolLevel * editor_workspace_new_level()

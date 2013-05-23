@@ -1,7 +1,7 @@
-#ifndef __EDITOR_HEADER__
-#define __EDITOR_HEADER__
+#ifndef __EDITOR_KEYDIALOG__
+#define __EDITOR_KEYDIALOG__
 /*
-Copyright 2012 EngineerOfLies
+Copyright 2013 EngineerOfLies
 This file is part of the Engine of Lies game engine library and Editor of Lies
 level editor.
 
@@ -20,9 +20,10 @@ along with the EOL game engine and the EOL level editor.  If not,
 see <http://www.gnu.org/licenses/>.
 */
 
-#include "editor_workspace.h"
 #include <eol_window.h>
 
-void editor_header_window(EditorLevelData *levelData);
+
+void editor_key_dialog(eolLine Title, void *data,void (*callback)(void *data,eolLine Key, eolLine Value));
+
 
 #endif

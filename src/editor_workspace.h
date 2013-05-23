@@ -21,8 +21,15 @@ see <http://www.gnu.org/licenses/>.
 */
 
 #include <eol_window.h>
+#include <eol_level.h>
 
+/*working level data*/
+typedef struct
+{
+  eolLevel      *level;
+  eolLevelLayer *activeLayer;
+}EditorLevelData;
 
-void editor_workspace();
+EditorLevelData * editor_workspace();
 
 #endif

@@ -23,7 +23,7 @@ see <http://www.gnu.org/licenses/>.
 #include <eol_window.h>
 
 
-void editor_key_edit_window();
+void editor_key_edit_window(eolKeychain *keys);
 
 
 #endif
