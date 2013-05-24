@@ -28,11 +28,51 @@ void new_key_callback(void *data,eolLine Key, eolLine Value)
   if (!data)return;
   keys = (eolKeychain*)win->customData;
   if (!keys)return;
-  fprintf(stdout,"new key: %s\nvalue: %s\n",Key,Value);
   make_key_value_text(KeyValue,Key, Value);
   listComp = eol_window_get_component_by_name(win,"key_list");
   eol_component_list_get_count(&count,listComp);
   eol_list_add_text_item(listComp,count,KeyValue);
+}
+
+void editor_keyedit_update_keychain(eolKeychain *keyList,eolComponent *listBox)
+{
+  int i;
+  eolUint count = 0;
+  eolLine itemText;
+  eolLine key,value;
+  eolKeychain *newItem, *hashValue;
+  char * delimeter;
+  eolComponent *item;
+  if ((!keyList) || (!listBox))return;
+  eol_component_list_get_count(&count,listBox);
+  eol_keychain_list_clear(keyList);
+  for (i = 0; i < count;i++)
+  {
+    item = NULL;
+    eol_component_list_get_nth_item(&item,listBox,i);
+    if (item)
+    {
+      eol_label_get_text(item,itemText);
+      delimeter = strstr(itemText,":\t");
+      if (delimeter != NULL)
+      {
+        eol_line_clear(key);
+        eol_line_clear(value);
+        strncpy(key,itemText,(delimeter - itemText) - 1);
+        key[(delimeter - itemText)] = '\0';
+        eol_line_cpy(value,&delimeter[3]);
+        newItem = eol_keychain_new_hash();
+        if (newItem)
+        {
+          hashValue = eol_keychain_new_string(key);
+          eol_keychain_hash_insert(newItem,"Key",hashValue);
+          hashValue = eol_keychain_new_string(value);
+          eol_keychain_hash_insert(newItem,"Value",hashValue);
+          eol_keychain_list_append(keyList,newItem);
+        }
+      }
+    }
+  }
 }
 
 eolBool editor_keyedit_update(eolWindow *win,GList *updates)
@@ -40,18 +80,32 @@ eolBool editor_keyedit_update(eolWindow *win,GList *updates)
   GList *c;
   eolComponent *comp = NULL;
   if (win == NULL)return eolFalse;
-  for (c = updates;c != NULL;c = c->next)
+  for (c = updates;c != NULL;c
+ = c->next)
   {
     if (c->data == NULL)continue;
     comp = (eolComponent *)c->data;
     if (eol_line_cmp(comp->name,"done")==0)
     {
+      editor_keyedit_update_keychain(win->customData,eol_window_get_component_by_name(win,"key_list"));
       eol_window_free(&win);
       return eolTrue;
     }
-    if (eol_line_cmp(comp->name,"newkey")==0)
+    else if (eol_line_cmp(comp->name,"cancel")==0)
+    {
+      
+      eol_window_free(&win);
+      return eolTrue;
+    }
+    else if (eol_line_cmp(comp->name,"newkey")==0)
     {
       editor_key_dialog("Enter New Key", win,new_key_callback);
+      return eolTrue;
+    }
+    else if (eol_line_cmp(comp->name,"deletekey")==0)
+    {
+      eol_component_list_delete_selected_item(
+        eol_window_get_component_by_name(win,"key_list"));
       return eolTrue;
     }
   }
@@ -70,7 +124,7 @@ void editor_key_edit_populate_list(eolWindow *win,eolKeychain *keys)
   eolKeychain *item;
   eolLine Key,Value;
   eolLine KeyValue;
-  if (win)return;
+  if (!win)return;
   listComp = eol_window_get_component_by_name(win,"key_list");
   if (!listComp)return;
   for (i = 0; i < keys->itemCount; i++)
@@ -101,6 +155,7 @@ void editor_key_edit_window(eolKeychain *keys)
   win->update = editor_keyedit_update;
   win->draw = editor_keyedit_draw;
   win->customData = keys;
+  editor_key_edit_populate_list(win,keys);
 }
 
 

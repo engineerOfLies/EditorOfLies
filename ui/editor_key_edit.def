@@ -39,6 +39,14 @@ components:
     buttonText: Done
     buttonType: STOCK
   - type:       BUTTON
+    name:       cancel
+    id:         5
+    rect:       0.7,0.9,1,1
+    hotkey:     ESC
+    justify:    CENTER
+    buttonText: Cancel
+    buttonType: STOCK
+  - type:       BUTTON
     name:       newkey
     id:         2
     rect:       0.1,0.9,1,1
