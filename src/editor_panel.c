@@ -19,7 +19,7 @@ typedef struct
   eolLine     title;
   eolUint     mode;
   eolWindow * childwindow[eolPanelModeMax];
-  EditorLevelData *levelData;
+  eolWindow * workspace;
 }eolEditorPanelData;
 /*local global variabls*/
 
@@ -95,7 +95,7 @@ void editor_panel_draw(eolWindow *win)
 {
 }
 
-void editor_panel_window(EditorLevelData *levelData)
+void editor_panel_window(eolWindow *workspace)
 {
   eolWindow *win;
   eolEditorPanelData *data = NULL;
@@ -109,7 +109,7 @@ void editor_panel_window(EditorLevelData *levelData)
   memset(win->customData,0,sizeof(eolEditorPanelData));
   data = (eolEditorPanelData*)win->customData;
   data->childwindow[eolPanelModeLayer] = editor_layer_panel();
-  data->levelData = levelData;
+  data->workspace = workspace;
 }
 
 /*eol@eof*/

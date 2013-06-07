@@ -11,7 +11,7 @@
 
 typedef struct
 {
-  EditorLevelData *levelData;
+  eolWindow *workspace;
 }editorHeaderData;
 
 /*local global variabls*/
@@ -21,13 +21,22 @@ void editor_on_title_change(void *data)
 {
   eolWindow *win;
   editorHeaderData *header;
+  EditorWorkspace *workspace;
   eolComponent *labelComp = NULL;
+  
   if (!data)return;
+  
   win = (eolWindow *)data;
   header = (editorHeaderData *)win->customData;
   if (!header)return;
+  
+  workspace = editor_get_workspace(header->workspace);
+  if (!workspace)return;
+  
   labelComp = eol_window_get_component_by_id(win,10);
-  eol_label_set_text(labelComp,header->levelData->level->idName);
+  if (!labelComp)return;
+  
+  eol_label_set_text(labelComp,workspace->level->idName);
 }
 
 /*function definitions*/
@@ -35,8 +44,8 @@ void editor_on_title_change(void *data)
 eolBool editor_header_update(eolWindow *win,GList *updates)
 {
   GList *c;
-  eolLine title;
   eolComponent *comp = NULL;
+  EditorWorkspace *workspace = NULL;
   editorHeaderData *header = NULL;
   if ((win == NULL)||(updates == NULL))return eolFalse;
   header = (editorHeaderData *)win->customData;
@@ -47,10 +56,14 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
     switch (comp->id)
     {
       case 0:
-        editor_file_menu_window();
+        editor_file_menu_window(header->workspace);
         return eolTrue;
       case 1:
-        editor_key_edit_window(header->levelData->level->keys);
+        workspace = editor_get_workspace(header->workspace);
+        if (workspace)
+        {
+          editor_key_edit_window(workspace->level->keys);
+        }
         return eolTrue;
     }
   }
@@ -61,7 +74,7 @@ void editor_header_draw(eolWindow *win)
 {
 }
 
-void editor_header_window(EditorLevelData *levelData)
+void editor_header_window(eolWindow *workspace)
 {
   eolWindow *win;
   editorHeaderData * headerData;
@@ -72,7 +85,7 @@ void editor_header_window(EditorLevelData *levelData)
   win->customData = malloc(sizeof(editorHeaderData));
   memset(win->customData,0,sizeof(editorHeaderData));
   headerData = (editorHeaderData*)win->customData;
-  headerData->levelData = levelData;
+  headerData->workspace = workspace;
 }
 
 

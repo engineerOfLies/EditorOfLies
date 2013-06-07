@@ -26,10 +26,18 @@ see <http://www.gnu.org/licenses/>.
 /*working level data*/
 typedef struct
 {
-  eolLevel      *level;
-  eolLevelLayer *activeLayer;
-}EditorLevelData;
+  eolLine         path;
+  eolLine         filename;
+  eolLevel      * level;
+  eolLevelLayer * activeLayer;
+}EditorWorkspace;
 
-EditorLevelData * editor_workspace();
+eolLevel * editor_workspace_get_level(eolWindow *workspace);
+
+EditorWorkspace *editor_get_workspace(eolWindow *workspace);
+
+void editor_workspace_load_level(eolWindow *workspace,eolLine filename);
+
+eolWindow* editor_workspace();
 
 #endif

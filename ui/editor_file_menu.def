@@ -24,7 +24,7 @@ components:
   - type:       BUTTON
     name:       new_button
     id:         1
-    rect:       0.01,0.2,138,1
+    rect:       0.01,0.25,138,1
     hotkey:     n
     hotkeymod:  LAlt
     justify:    CENTER
@@ -42,16 +42,25 @@ components:
   - type:       BUTTON
     name:       save_as_button
     id:         3
-    rect:       0.01,0.6,138,1
+    rect:       0.01,0.55,138,1
     hotkey:     s
     hotkeymod:  LAlt
     justify:    CENTER
     buttonText: Save Level As
     buttonType: TEXT
   - type:       BUTTON
+    name:       load_button
+    id:         5
+    rect:       0.01,0.7,138,1
+    hotkey:     l
+    hotkeymod:  LAlt
+    justify:    CENTER
+    buttonText: Load Level...
+    buttonType: TEXT
+  - type:       BUTTON
     name:       quit_button
     id:         4
-    rect:       0.01,0.8,138,1
+    rect:       0.01,0.85,138,1
     hotkey:     q
     hotkeymod:  LAlt
     justify:    CENTER

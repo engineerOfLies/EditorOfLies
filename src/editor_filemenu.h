@@ -23,7 +23,7 @@ see <http://www.gnu.org/licenses/>.
 #include <eol_window.h>
 
 
-void editor_file_menu_window();
+void editor_file_menu_window(eolWindow *workspace);
 
 
 #endif

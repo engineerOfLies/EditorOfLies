@@ -20,10 +20,9 @@ along with the EOL game engine and the EOL level editor.  If not,
 see <http://www.gnu.org/licenses/>.
 */
 
-#include "editor_workspace.h"
 #include <eol_window.h>
 
 
-void editor_panel_window(EditorLevelData *levelData);
+void editor_panel_window(eolWindow *workspace);
 
 #endif
