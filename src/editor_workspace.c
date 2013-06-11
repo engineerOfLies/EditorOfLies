@@ -52,6 +52,20 @@ eolLevel *editor_workspace_new_level()
   return level;
 }
 
+void editor_workspace_create_new_level(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  if (!workspace)return;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  /*close old level*/
+  /*TODO: check to see if it has been saved since last edit*/
+  wsData = editor_get_workspace(workspace);
+  eol_level_free(&wsData->level);
+  /*make a new one*/
+  wsData->level = editor_workspace_new_level();
+  wsData->activeLayer = eol_level_get_layer_n(wsData->level,0);
+}
 
 eolLevel * editor_workspace_get_level(eolWindow *workspace)
 {
@@ -72,12 +86,11 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   eol_level_free(&wsData->level);
   loadingLevel = eol_level_load(filename);
   if (loadingLevel);
-  eol_level_set_active_layer(loadingLevel, 0);
-  eol_level_set_current_level(loadingLevel);
-
   wsData->activeLayer = NULL;
   wsData->level = loadingLevel;
   eol_level_setup(loadingLevel);
+  eol_level_set_active_layer(loadingLevel, 0);
+  eol_level_set_current_level(loadingLevel);
 }
 
 EditorWorkspace *editor_get_workspace(eolWindow *workspace)
@@ -150,8 +163,8 @@ eolWindow *editor_workspace()
     eol_logger_message(EOL_LOG_ERROR,"editor_workspace: failed to allocate workspace data\n");
     return NULL;
   }
+  memset(win->customData,0,sizeof(EditorWorkspace));
   data = (EditorWorkspace*)win->customData;
-  data->level = editor_workspace_new_level();
   eol_line_cpy(data->filename,"untitled.lvl");
   eol_line_cpy(data->path,"saves");
   conf = eol_config_load("system/editor.cfg");

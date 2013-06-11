@@ -1,5 +1,6 @@
 #include "editor_header.h"
 #include "editor_filemenu.h"
+#include "editor_viewmenu.h"
 #include "editor_keyedit.h"
 #include "editor_workspace.h"
 
@@ -53,17 +54,25 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
   {
     if (c->data == NULL)continue;
     comp = (eolComponent *)c->data;
-    switch (comp->id)
+    if (eol_line_cmp(comp->name,"file_button")==0)
     {
-      case 0:
         editor_file_menu_window(header->workspace);
         return eolTrue;
-      case 1:
+    }
+    if (eol_line_cmp(comp->name,"keys_button")==0)
+    {
         workspace = editor_get_workspace(header->workspace);
         if (workspace)
         {
-          editor_key_edit_window(workspace->level->keys);
+          if (workspace->level != NULL)
+          {
+            editor_key_edit_window(workspace->level->keys);
+          }
         }
+    }
+    if (eol_line_cmp(comp->name,"view_button")==0)
+    {
+        editor_view_menu_window(header->workspace);
         return eolTrue;
     }
   }

@@ -1,5 +1,5 @@
-#ifndef __EDITOR_WORKSPACE__
-#define __EDITOR_WORKSPACE__
+#ifndef __EDITOR_VIEWMENU__
+#define __EDITOR_VIEWMENU__
 /*
 Copyright 2012 EngineerOfLies
 This file is part of the Engine of Lies game engine library and Editor of Lies
@@ -21,29 +21,9 @@ see <http://www.gnu.org/licenses/>.
 */
 
 #include <eol_window.h>
-#include <eol_level.h>
 
-/*working level data*/
-typedef struct
-{
-  eolLine         path;
-  eolLine         filename;
-  eolLevel      * level;
-  eolLevelLayer * activeLayer;
-}EditorWorkspace;
 
-/**
- * @brief closes current level and creates a new default level to edit
- * @param workspace the workspace where the level will be created
- */
-void editor_workspace_create_new_level(eolWindow *workspace);
+void editor_view_menu_window();
 
-eolLevel * editor_workspace_get_level(eolWindow *workspace);
-
-EditorWorkspace *editor_get_workspace(eolWindow *workspace);
-
-void editor_workspace_load_level(eolWindow *workspace,eolLine filename);
-
-eolWindow* editor_workspace();
 
 #endif

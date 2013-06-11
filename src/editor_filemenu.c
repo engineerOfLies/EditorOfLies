@@ -40,45 +40,61 @@ void editor_load_level_prompt(eolWindow *self)
 
 eolBool editor_file_menu_update(eolWindow *win,GList *updates)
 {
-  GList *c;
+  GList *c,*l;
   EditorWorkspace * workspace;
   FileMenuData *fmData;
   eolComponent *comp = NULL;
+  eolComponent *item = NULL;
   if (win == NULL)return eolFalse;
   fmData = (FileMenuData*)win->customData;
   for (c = updates;c != NULL;c = c->next)
   {
     if (c->data == NULL)continue;
     comp = (eolComponent *)c->data;
-    switch (comp->id)
+    if (comp->id == 1000)
     {
-      case 1:/*new*/
-        eol_window_free(&win);
-        return eolTrue;
-      case 2:/*save*/
-        workspace = editor_get_workspace(fmData->workspace);
-        if (workspace)
+      for (l = eol_list_get_updates(comp);l != NULL; l = l->next)
+      {
+        if (l->data == NULL)continue;
+        item = (eolComponent *)l->data;
+        if (eol_line_cmp(item->name,"new_button")==0)
         {
-          editor_save_level(workspace->path,workspace->filename,workspace->level);
+          editor_workspace_create_new_level(fmData->workspace);
+          eol_window_free(&win);
+          return eolTrue;
         }
-        else
+        if (eol_line_cmp(item->name,"save_as_button")==0)
         {
-          eol_logger_message(EOL_LOG_ERROR,"editor_file_menu_update: no workspace data!");
+          eol_window_free(&win);
+          return eolTrue;
         }
-        eol_window_free(&win);
-        return eolTrue;
-      case 3:/*save as*/
-        eol_window_free(&win);
-        return eolTrue;
-      case 5:
-        /*load*/
-        editor_workspace_load_level(fmData->workspace,"saves/untitled.lvl");
-        eol_window_free(&win);
-        return eolTrue;
-      case 4:
-        eol_dialog_quit();
-        eol_window_free(&win);
-        return eolTrue;
+        if (eol_line_cmp(item->name,"save_button")==0)
+        {
+          workspace = editor_get_workspace(fmData->workspace);
+          if (workspace)
+          {
+            editor_save_level(workspace->path,workspace->filename,workspace->level);
+          }
+          else
+          {
+            eol_logger_message(EOL_LOG_ERROR,"editor_file_menu_update: no workspace data!");
+          }
+          eol_window_free(&win);
+          return eolTrue;
+        }
+        if (eol_line_cmp(item->name,"load_button")==0)
+        {
+          editor_workspace_load_level(fmData->workspace,"saves/untitled.lvl");
+          eol_window_free(&win);
+          return eolTrue;
+        }
+        if (eol_line_cmp(item->name,"quit_button")==0)
+        {
+          eol_dialog_quit();
+          eol_window_free(&win);
+          return eolTrue;
+        }
+      }
     }
   }
   eol_window_free_if_outside_click(&win);
