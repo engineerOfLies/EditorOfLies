@@ -23,7 +23,7 @@ see <http://www.gnu.org/licenses/>.
 #include <eol_window.h>
 
 
-eolWindow * editor_layer_panel();
+eolWindow * editor_layer_panel(eolWindow * workspace);
 
 
 #endif

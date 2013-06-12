@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     eol_input_update();
     eol_mouse_update();
 
+    editor_workspace_clear_updated(workspaceWindow);
     eol_window_update_all();
 
     eol_graphics_frame_begin();

@@ -15,6 +15,52 @@
 
 /*function definitions*/
 
+void editor_workspace_clear_updated(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  wsData->updated = eolFalse;
+}
+
+eolBool editor_workspace_updated(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return eolFalse;
+  return wsData->updated;
+}
+
+eolBool editor_workspace_modified(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return eolFalse;
+  return wsData->modified;
+}
+
+
+void editor_workspace_level_modified(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  wsData->modified = eolTrue;
+  wsData->updated = eolTrue;
+}
+
+void editor_workspace_save_level(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  eolText filepath;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  snprintf(filepath,EOLTEXTLEN,"%s/%s",wsData->path,wsData->filename);
+  eol_level_save(filepath,wsData->level);
+
+  wsData->modified = eolFalse;
+}
+
 eolLevel *editor_workspace_new_level()
 {
   eolLevel *level = NULL;
@@ -65,6 +111,8 @@ void editor_workspace_create_new_level(eolWindow *workspace)
   /*make a new one*/
   wsData->level = editor_workspace_new_level();
   wsData->activeLayer = eol_level_get_layer_n(wsData->level,0);
+  wsData->modified = eolFalse;
+  wsData->updated = eolTrue;
 }
 
 eolLevel * editor_workspace_get_level(eolWindow *workspace)
@@ -88,9 +136,28 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   if (loadingLevel);
   wsData->activeLayer = NULL;
   wsData->level = loadingLevel;
+  wsData->modified = eolFalse;
+  wsData->updated = eolTrue;
   eol_level_setup(loadingLevel);
   eol_level_set_active_layer(loadingLevel, 0);
   eol_level_set_current_level(loadingLevel);
+}
+
+void editor_workspace_add_layer(eolWindow *workspace)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_add_layer(wsData->level);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_select_layer(eolWindow *workspace,eolUint layer)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_set_active_layer(wsData->level, layer);
 }
 
 EditorWorkspace *editor_get_workspace(eolWindow *workspace)

@@ -49,7 +49,9 @@ void editor_panel_hide_all(eolEditorPanelData *data)
 eolBool editor_panel_update(eolWindow *win,GList *updates)
 {
   GList *c;
+  GList *l;
   eolComponent *labelComp = NULL;
+  eolComponent *list = NULL;
   eolComponent *comp = NULL;
   eolEditorPanelData *data = NULL;
   if ((win == NULL)||(updates == NULL))return eolFalse;
@@ -57,35 +59,50 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
   for (c = updates;c != NULL;c = c->next)
   {
     if (c->data == NULL)continue;
-    comp = (eolComponent *)c->data;
+    list = (eolComponent *)c->data;
     labelComp = eol_window_get_component_by_id(win,10);
-    switch (comp->id)
+    if (list->id == 1000)
     {
-      case 1:
-        editor_panel_hide_all(data);
-        editor_panel_show(data,eolPanelModeLayer);
-        eol_label_set_text(labelComp,"Layer Editor");
-        return eolTrue;
-      case 2:
-        editor_panel_hide_all(data);
-        editor_panel_show(data,eolPanelModeBackground);
-        eol_label_set_text(labelComp,"Background Editor");
-        return eolTrue;
-      case 3:
-        editor_panel_hide_all(data);
-        editor_panel_show(data,eolPanelModeTile);
-        eol_label_set_text(labelComp,"Panel Editor");
-        return eolTrue;
-      case 4:
-        editor_panel_hide_all(data);
-        editor_panel_show(data,eolPanelModeMask);
-        eol_label_set_text(labelComp,"Mask Editor");
-        return eolTrue;
-      case 5:
-        editor_panel_hide_all(data);
-        editor_panel_show(data,eolPanelModeSpawn);
-        eol_label_set_text(labelComp,"Spawn Editor");
-        return eolTrue;
+      for (l = eol_list_get_updates(list);l != NULL; l = l->next)
+      {
+        if (l->data == NULL)continue;
+        comp = (eolComponent *)l->data;
+        if (eol_line_cmp(comp->name,"layers_button")==0)
+        {
+          editor_panel_hide_all(data);
+          editor_panel_show(data,eolPanelModeLayer);
+          eol_label_set_text(labelComp,"Layer Editor");
+          return eolTrue;
+        }
+        if (eol_line_cmp(comp->name,"bg_button")==0)
+        {
+          editor_panel_hide_all(data);
+          editor_panel_show(data,eolPanelModeBackground);
+          eol_label_set_text(labelComp,"Background Editor");
+          return eolTrue;
+        }
+        if (eol_line_cmp(comp->name,"tile_button")==0)
+        {
+          editor_panel_hide_all(data);
+          editor_panel_show(data,eolPanelModeTile);
+          eol_label_set_text(labelComp,"Tile Editor");
+          return eolTrue;
+        }
+        if (eol_line_cmp(comp->name,"mask_button")==0)
+        {
+          editor_panel_hide_all(data);
+          editor_panel_show(data,eolPanelModeMask);
+          eol_label_set_text(labelComp,"Mask Editor");
+          return eolTrue;
+        }
+        if (eol_line_cmp(comp->name,"spawn_button")==0)
+        {
+          editor_panel_hide_all(data);
+          editor_panel_show(data,eolPanelModeSpawn);
+          eol_label_set_text(labelComp,"Spawn Editor");
+          return eolTrue;
+        }
+      }
     }
   }
   return eolFalse;
@@ -108,7 +125,7 @@ void editor_panel_window(eolWindow *workspace)
   if (win->customData == NULL)return;
   memset(win->customData,0,sizeof(eolEditorPanelData));
   data = (eolEditorPanelData*)win->customData;
-  data->childwindow[eolPanelModeLayer] = editor_layer_panel();
+  data->childwindow[eolPanelModeLayer] = editor_layer_panel(workspace);
   data->workspace = workspace;
 }
 

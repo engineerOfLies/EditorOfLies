@@ -22,7 +22,6 @@ components:
       - type:       BUTTON
         name:       new_button
         id:         1
-        rect:       0.01,0.25,138,1
         hotkey:     n
         hotkeymod:  LAlt
         justify:    CENTER
@@ -31,7 +30,6 @@ components:
       - type:       BUTTON
         name:       save_button
         id:         2
-        rect:       0.01,0.4,138,1
         hotkey:     s
         hotkeymod:  LCtrl
         justify:    CENTER

@@ -19,59 +19,68 @@ components:
 #    fontName:
     color:      1,1,1
     alpha:      1
-  - type:         BUTTON
-    name:         layers_button
-    id:           1
-    rect:         0.02,0.07,48,48
-    hotkey:       1
-    justify:      CENTER
-    buttonText: 
-    buttonImage:  images/UI/layers_btn.png
-    buttonHigh:   images/UI/layers_btn_high.png
-    buttonHit:    images/UI/layers_btn_hit.png
-    buttonType:   CUSTOM
-  - type:         BUTTON
-    name:         background_button
-    id:           2
-    rect:         0.21,0.07,48,48
-    hotkey:       2
-    justify:      CENTER
-    buttonText: 
-    buttonImage:  images/UI/backgrounds_btn.png
-    buttonHigh:   images/UI/backgrounds_btn_high.png
-    buttonHit:    images/UI/backgrounds_btn_hit.png
-    buttonType:   CUSTOM
-  - type:         BUTTON
-    name:         tile_button
-    id:           3
-    rect:         0.41,0.07,48,48
-    hotkey:       3
-    justify:      CENTER
-    buttonText: 
-    buttonImage:  images/UI/tiles_btn.png
-    buttonHigh:   images/UI/tiles_btn_high.png
-    buttonHit:    images/UI/tiles_btn_hit.png
-    buttonType:   CUSTOM
-  - type:         BUTTON
-    name:         mask_button
-    id:           4
-    rect:         0.61,0.07,48,48
-    hotkey:       4
-    justify:      CENTER
-    buttonText: 
-    buttonImage:  images/UI/mask_btn.png
-    buttonHigh:   images/UI/mask_btn_high.png
-    buttonHit:    images/UI/mask_btn_hit.png
-    buttonType:   CUSTOM
-  - type:         BUTTON
-    name:         spawn_button
-    id:           5
-    rect:         0.81,0.07,48,48
-    hotkey:       5
-    justify:      CENTER
-    buttonText: 
-    buttonImage:  images/UI/spawn_btn.png
-    buttonHigh:   images/UI/spawn_btn_high.png
-    buttonHit:    images/UI/spawn_btn_hit.png
-    buttonType:   CUSTOM
+  - type:             LIST
+    listType:         dock
+    name:             panel_list
+    allowSelection:   false
+    showBackground:   false
+    showBoarder:      false
+    backgroundAlpha:  0
+    id:               1000
+    rect:             0.01,0.04,0.99,64
+    showVSlider:      false
+    showHSlider:      false
+    itemDimensions:   48,48
+    itemPadding:      2,2
+    items:
+    - type:         BUTTON
+      name:         layers_button
+      id:           1
+      hotkey:       1
+      justify:      LEFT
+      buttonText: 
+      buttonImage:  images/UI/layers_btn.png
+      buttonHigh:   images/UI/layers_btn_high.png
+      buttonHit:    images/UI/layers_btn_hit.png
+      buttonType:   CUSTOM
+    - type:         BUTTON
+      name:         bg_button
+      id:           2
+      hotkey:       2
+      justify:      LEFT
+      buttonText: 
+      buttonImage:  images/UI/backgrounds_btn.png
+      buttonHigh:   images/UI/backgrounds_btn_high.png
+      buttonHit:    images/UI/backgrounds_btn_hit.png
+      buttonType:   CUSTOM
+    - type:         BUTTON
+      name:         tile_button
+      id:           3
+      hotkey:       3
+      justify:      LEFT
+      buttonText: 
+      buttonImage:  images/UI/tiles_btn.png
+      buttonHigh:   images/UI/tiles_btn_high.png
+      buttonHit:    images/UI/tiles_btn_hit.png
+      buttonType:   CUSTOM
+    - type:         BUTTON
+      name:         mask_button
+      id:           4
+      hotkey:       4
+      justify:      LEFT
+      buttonText: 
+      buttonImage:  images/UI/mask_btn.png
+      buttonHigh:   images/UI/mask_btn_high.png
+      buttonHit:    images/UI/mask_btn_hit.png
+      buttonType:   CUSTOM
+    - type:         BUTTON
+      name:         spawn_button
+      id:           5
+      hotkey:       5
+      justify:      LEFT
+      buttonText: 
+      buttonImage:  images/UI/spawn_btn.png
+      buttonHigh:   images/UI/spawn_btn_high.png
+      buttonHit:    images/UI/spawn_btn_hit.png
+      buttonType:   CUSTOM
 

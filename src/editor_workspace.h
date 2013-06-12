@@ -26,12 +26,15 @@ see <http://www.gnu.org/licenses/>.
 /*working level data*/
 typedef struct
 {
+  eolBool         updated; /**<if modified since last frame*/
+  eolBool         modified;/**<if modified since last save*/
   eolLine         path;
   eolLine         filename;
   eolLevel      * level;
   eolLevelLayer * activeLayer;
 }EditorWorkspace;
 
+/*workspace utility*/
 /**
  * @brief closes current level and creates a new default level to edit
  * @param workspace the workspace where the level will be created
@@ -42,8 +45,26 @@ eolLevel * editor_workspace_get_level(eolWindow *workspace);
 
 EditorWorkspace *editor_get_workspace(eolWindow *workspace);
 
-void editor_workspace_load_level(eolWindow *workspace,eolLine filename);
+/*layer operations*/
 
+/**
+ * @brief adds a new layer to the level
+ * @param workspace the workspace to add a layer to
+ */
+void editor_workspace_add_layer(eolWindow *workspace);
+void editor_workspace_select_layer(eolWindow *workspace,eolUint layer);
+
+/*maintaining updates*/
+eolBool editor_workspace_updated(eolWindow *workspace);
+eolBool editor_workspace_modified(eolWindow *workspace);
+void editor_workspace_clear_updated(eolWindow *workspace);
+
+/*Loading and saving the level*/
+void editor_workspace_load_level(eolWindow *workspace,eolLine filename);
+void editor_workspace_save_level(eolWindow *workspace);
+
+
+/*constructor*/
 eolWindow* editor_workspace();
 
 #endif

@@ -19,13 +19,6 @@ typedef struct
 
 /*function definitions*/
 
-void editor_save_level(eolLine path,eolLine filename,eolLevel *level)
-{
-  eolText filepath;
-  snprintf(filepath,EOLTEXTLEN,"%s/%s",path,filename);
-  eol_level_save(filepath,level);
-}
-
 void editor_load_level_prompt(eolWindow *self)
 {
   /*
@@ -41,7 +34,6 @@ void editor_load_level_prompt(eolWindow *self)
 eolBool editor_file_menu_update(eolWindow *win,GList *updates)
 {
   GList *c,*l;
-  EditorWorkspace * workspace;
   FileMenuData *fmData;
   eolComponent *comp = NULL;
   eolComponent *item = NULL;
@@ -70,15 +62,7 @@ eolBool editor_file_menu_update(eolWindow *win,GList *updates)
         }
         if (eol_line_cmp(item->name,"save_button")==0)
         {
-          workspace = editor_get_workspace(fmData->workspace);
-          if (workspace)
-          {
-            editor_save_level(workspace->path,workspace->filename,workspace->level);
-          }
-          else
-          {
-            eol_logger_message(EOL_LOG_ERROR,"editor_file_menu_update: no workspace data!");
-          }
+          editor_workspace_save_level(fmData->workspace);
           eol_window_free(&win);
           return eolTrue;
         }

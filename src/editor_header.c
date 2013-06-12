@@ -50,6 +50,10 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
   editorHeaderData *header = NULL;
   if ((win == NULL)||(updates == NULL))return eolFalse;
   header = (editorHeaderData *)win->customData;
+  workspace = editor_get_workspace(header->workspace);
+
+
+  /*handle input updates*/
   for (c = updates;c != NULL;c = c->next)
   {
     if (c->data == NULL)continue;
@@ -68,7 +72,12 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
           {
             editor_key_edit_window(workspace->level->keys);
           }
+          else
+          {
+            eol_dialog_message("Warning","No Open Level to Edit Keys for.");
+          }
         }
+        return eolTrue;
     }
     if (eol_line_cmp(comp->name,"view_button")==0)
     {
@@ -81,6 +90,27 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
 
 void editor_header_draw(eolWindow *win)
 {
+  eolComponent *labelComp = NULL;
+  EditorWorkspace *workspace = NULL;
+  editorHeaderData *header = NULL;
+  if (win == NULL)return;
+  header = (editorHeaderData *)win->customData;
+  workspace = editor_get_workspace(header->workspace);
+  /*maintenance updates*/
+  if ((workspace != NULL)
+    && (editor_workspace_updated(header->workspace)))
+  {
+    if (workspace->activeLayer)
+    {
+      labelComp = eol_window_get_component_by_name(win,"layer_name");
+      eol_label_set_text(labelComp,workspace->activeLayer->idName);
+    }
+    if (workspace->level)
+    {
+      labelComp = eol_window_get_component_by_name(win,"level_name");
+      eol_label_set_text(labelComp,workspace->level->idName);
+    }
+  }
 }
 
 void editor_header_window(eolWindow *workspace)

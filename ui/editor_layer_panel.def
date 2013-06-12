@@ -2,23 +2,56 @@
 name:         edit_layer_panel
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
-rect:         -250,150,0,0
+rect:         -260,150,0,0
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  True
 components:
   - type:         LIST
     listType:     text
-    name:         test_list
+    name:         layer_list
     id:           100
-    rect:         2,2,0.9,200
+    rect:         2,2,0.85,200
     showVSlider:  true
     showHSlider:  false
-  - type:         SLIDER
-    name:         test_slider
-    id:           200
-    rect:         2,202,15,200
-    vertical:     true
-    barColor:     1,0.4,.3
-    sliderType:   COMMON
-    startPosition: 0
+  - type:             LIST
+    listType:         text
+    name:             layer_actions
+    allowSelection:   false
+    showBackground:   false
+    showBoarder:      false
+    id:               1000
+    rect:             0.01,201,0.8,0.5
+    showVSlider:      false
+    showHSlider:      false
+    items:
+      - type:       BUTTON
+        name:       new_layer
+        id:         1
+        justify:    CENTER
+        buttonText: Add Layer
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       move_layer_up
+        id:         2
+        justify:    CENTER
+        buttonText: Move Layer Up
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       move_layer_down
+        id:         3
+        justify:    CENTER
+        buttonText: Move Layer Down
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       delete_layer
+        id:         4
+        justify:    CENTER
+        buttonText: Delete Layer
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       make_active
+        id:         5
+        justify:    CENTER
+        buttonText: Edit Layer
+        buttonType: TEXT
