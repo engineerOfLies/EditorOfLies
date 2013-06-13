@@ -2,8 +2,23 @@
 #include "editor_layer_panel.h"
 #include "editor_workspace.h"
 
+void editor_layer_delete(void *data)
+{
+  eolWindow *win;
+  eolComponent *comp = NULL;
+  eolUint layerIndex = 0;
+  if (!data)return;
+  win = (eolWindow*)data;
+  comp = eol_window_get_component_by_name(win,"layer_list");
+  if(eol_component_list_get_selected_id(&layerIndex,comp))
+  {
+    editor_workspace_delete_layer(win->customData,layerIndex);
+  }
+}
+
 eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
 {
+  eolUint index;
   GList *c,*l;
   EditorWorkspace *workspace = NULL;
   eolComponent *comp = NULL,*listItem = NULL;
@@ -33,8 +48,36 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
               eol_dialog_message("Warning","No Open Level to add a layer to!");
             }
           }
+          return eolTrue;          
+        }
+        if (eol_line_cmp(listItem->name,"delete_layer")==0)
+        {
+          comp = eol_window_get_component_by_name(win,"layer_list");
+          if(eol_component_list_get_selected_id(&index,comp))
+          {
+            eol_dialog_yes_no("Delete Selected Layer?",
+                              win,
+                              editor_layer_delete,
+                              NULL);
+          }
+          else
+          {
+            eol_dialog_message("Warning","No Selected Layer to Delete.");
+          }
           return eolTrue;
-          
+        }
+        if (eol_line_cmp(listItem->name,"make_active")==0)
+        {
+          comp = eol_window_get_component_by_name(win,"layer_list");
+          if(eol_component_list_get_selected_id(&index,comp))
+          {
+            editor_workspace_select_layer(win->customData,index);
+          }
+          else
+          {
+            eol_dialog_message("Warning","No Selected Layer to Make Active.");
+          }
+          return eolTrue;
         }
       }
     }

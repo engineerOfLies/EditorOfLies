@@ -152,12 +152,23 @@ void editor_workspace_add_layer(eolWindow *workspace)
   editor_workspace_level_modified(workspace);
 }
 
+void editor_workspace_delete_layer(eolWindow *workspace,eolUint layer)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_delete_Layer_n(wsData->level,layer);
+  editor_workspace_level_modified(workspace);
+}
+
+
 void editor_workspace_select_layer(eolWindow *workspace,eolUint layer)
 {
   EditorWorkspace *wsData;
   wsData = editor_get_workspace(workspace);
   if (!wsData)return;
-  eol_level_set_active_layer(wsData->level, layer);
+  wsData->activeLayer = eol_level_set_active_layer(wsData->level, layer);
+  editor_workspace_level_modified(workspace);
 }
 
 EditorWorkspace *editor_get_workspace(eolWindow *workspace)

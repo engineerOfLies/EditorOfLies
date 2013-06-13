@@ -50,8 +50,14 @@ components:
         buttonText: Delete Layer
         buttonType: TEXT
       - type:       BUTTON
-        name:       make_active
+        name:       rename_layer
         id:         5
+        justify:    CENTER
+        buttonText: Rename Layer
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       make_active
+        id:         6
         justify:    CENTER
         buttonText: Edit Layer
         buttonType: TEXT

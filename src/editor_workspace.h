@@ -52,6 +52,7 @@ EditorWorkspace *editor_get_workspace(eolWindow *workspace);
  * @param workspace the workspace to add a layer to
  */
 void editor_workspace_add_layer(eolWindow *workspace);
+void editor_workspace_delete_layer(eolWindow *workspace,eolUint layer);
 void editor_workspace_select_layer(eolWindow *workspace,eolUint layer);
 
 /*maintaining updates*/

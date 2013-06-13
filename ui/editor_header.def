@@ -47,7 +47,7 @@ components:
     id:         11
     name:       level_label
     rect:       0.65,0.1,1,1
-    text:       'Level :'
+    text:       'Current Level :'
     justify:    RIGHT
     wordWrap:   False
     fontSize:   3
@@ -57,7 +57,7 @@ components:
     id:         12
     name:       layer_label
     rect:       0.65,0.5,1,1
-    text:       'Layer :'
+    text:       'Active Layer :'
     justify:    RIGHT
     wordWrap:   False
     fontSize:   3

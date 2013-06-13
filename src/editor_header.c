@@ -105,10 +105,20 @@ void editor_header_draw(eolWindow *win)
       labelComp = eol_window_get_component_by_name(win,"layer_name");
       eol_label_set_text(labelComp,workspace->activeLayer->idName);
     }
+    else
+    {
+      labelComp = eol_window_get_component_by_name(win,"layer_name");
+      eol_label_set_text(labelComp,"[no layer]");
+    }
     if (workspace->level)
     {
       labelComp = eol_window_get_component_by_name(win,"level_name");
       eol_label_set_text(labelComp,workspace->level->idName);
+    }
+    else
+    {
+      labelComp = eol_window_get_component_by_name(win,"level_name");
+      eol_label_set_text(labelComp,"[no level]");
     }
   }
 }
