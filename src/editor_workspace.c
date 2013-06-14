@@ -143,6 +143,23 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   eol_level_set_current_level(loadingLevel);
 }
 
+eolLevelLayer *editor_workspace_get_layer(eolWindow *workspace,eolUint layerIndex)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return NULL;
+  return eol_level_get_layer_n(wsData->level,layerIndex);
+}
+
+void editor_workspace_hide_layer(eolWindow *workspace, eolUint layer, eolBool hide)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_hide_layer(wsData->level, layer, hide);
+  editor_workspace_level_modified(workspace);
+}
+
 void editor_workspace_add_layer(eolWindow *workspace)
 {
   EditorWorkspace *wsData;

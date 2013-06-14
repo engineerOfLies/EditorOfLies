@@ -20,13 +20,39 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
 {
   eolUint index;
   GList *c,*l;
+  eolLine buttonText;
   EditorWorkspace *workspace = NULL;
+  eolLevelLayer *layer;
   eolComponent *comp = NULL,*listItem = NULL;
+  eolComponent *hideButton = NULL;
   if ((win == NULL)||(updates == NULL))return eolFalse;
   for (c = updates;c != NULL;c = c->next)
   {
     if (c->data == NULL)continue;
     comp = (eolComponent *)c->data;
+    if (eol_line_cmp(comp->name,"layer_list")==0)
+    {
+      hideButton = eol_window_get_component_by_name(win,"layer_actions");      
+      hideButton = eol_component_list_get_item_by_name(hideButton,"hide_layer");
+      if (!hideButton)continue;
+      if(eol_component_list_get_selected_id(&index,comp))
+      {
+        layer = editor_workspace_get_layer(win->customData,index);
+        if ((!layer)||(!layer->hidden))
+        {
+          eol_button_set_text(hideButton,"Hide Layer");
+        }
+        else
+        {
+          eol_button_set_text(hideButton,"Unhide Layer");
+        }
+      }
+      else
+      {
+        eol_button_set_text(hideButton,"Hide Layer");
+      }
+      continue;
+    }
     if (eol_line_cmp(comp->name,"layer_actions") == 0)
     {
       /*something in the list of buttons*/
@@ -63,6 +89,27 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
           else
           {
             eol_dialog_message("Warning","No Selected Layer to Delete.");
+          }
+          return eolTrue;
+        }
+        if (eol_line_cmp(listItem->name,"hide_layer")==0)
+        {
+          comp = eol_window_get_component_by_name(win,"layer_list");
+          if(eol_component_list_get_selected_id(&index,comp))
+          {
+            eol_button_get_text(buttonText,listItem);
+            if (eol_line_cmp(buttonText,"Hide Layer")==0)
+            {
+              editor_workspace_hide_layer(win->customData, index, eolTrue);
+            }
+            else if (eol_line_cmp(buttonText,"Unhide Layer")==0)
+            {
+              editor_workspace_hide_layer(win->customData, index, eolFalse);
+            }
+          }
+          else
+          {
+            eol_dialog_message("Warning","No Selected Layer to Hide.");
           }
           return eolTrue;
         }

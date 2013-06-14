@@ -59,5 +59,11 @@ components:
         name:       make_active
         id:         6
         justify:    CENTER
-        buttonText: Edit Layer
+        buttonText: Select Layer
+        buttonType: TEXT
+      - type:       BUTTON
+        name:       hide_layer
+        id:         7
+        justify:    CENTER
+        buttonText: Hide Layer
         buttonType: TEXT
