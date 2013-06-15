@@ -1,5 +1,5 @@
-#editor layer panel definition
-name:         edit_layer_panel
+#editor background panel definition
+name:         edit_backgrounds_panel
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
 rect:         -280,150,0,0
@@ -9,14 +9,14 @@ passesInput:  True
 components:
   - type:         LIST
     listType:     text
-    name:         layer_list
+    name:         background_list
     id:           100
     rect:         2,2,0.85,200
     showVSlider:  true
     showHSlider:  false
   - type:             LIST
     listType:         text
-    name:             layer_actions
+    name:             background_actions
     allowSelection:   false
     showBackground:   false
     showBoarder:      false
@@ -26,44 +26,32 @@ components:
     showHSlider:      false
     items:
       - type:       BUTTON
-        name:       new_layer
+        name:       new_background
         id:         1
         justify:    CENTER
-        buttonText: Add Layer
+        buttonText: New Background
         buttonType: TEXT
       - type:       BUTTON
-        name:       move_layer_up
+        name:       move_background_up
         id:         2
         justify:    CENTER
-        buttonText: Move Layer Up
+        buttonText: Move Background Up
         buttonType: TEXT
       - type:       BUTTON
-        name:       move_layer_down
+        name:       move_background_down
         id:         3
         justify:    CENTER
-        buttonText: Move Layer Down
+        buttonText: Move Background Down
         buttonType: TEXT
       - type:       BUTTON
-        name:       delete_layer
+        name:       delete_background
         id:         4
         justify:    CENTER
-        buttonText: Delete Layer
+        buttonText: Delete Background
         buttonType: TEXT
       - type:       BUTTON
-        name:       rename_layer
-        id:         5
-        justify:    CENTER
-        buttonText: Rename Layer
-        buttonType: TEXT
-      - type:       BUTTON
-        name:       make_active
-        id:         6
-        justify:    CENTER
-        buttonText: Select Layer
-        buttonType: TEXT
-      - type:       BUTTON
-        name:       hide_layer
+        name:       hide_background
         id:         7
         justify:    CENTER
-        buttonText: Hide Layer
+        buttonText: Hide Background
         buttonType: TEXT

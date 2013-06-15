@@ -1,5 +1,6 @@
 #include "editor_panel.h"
 #include "editor_layer_panel.h"
+#include "editor_background_panel.h"
 
 #include <eol_dialog.h>
 #include <eol_logger.h>
@@ -72,6 +73,7 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
           editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeLayer);
           eol_label_set_text(labelComp,"Layer Editor");
+          editor_layer_panel_workspace_sync(data->childwindow[eolPanelModeLayer]);
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"bg_button")==0)
@@ -79,6 +81,7 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
           editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeBackground);
           eol_label_set_text(labelComp,"Background Editor");
+          editor_background_workspace_sync(data->childwindow[eolPanelModeBackground]);
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"tile_button")==0)
@@ -126,6 +129,7 @@ void editor_panel_window(eolWindow *workspace)
   memset(win->customData,0,sizeof(eolEditorPanelData));
   data = (eolEditorPanelData*)win->customData;
   data->childwindow[eolPanelModeLayer] = editor_layer_panel(workspace);
+  data->childwindow[eolPanelModeBackground] = editor_background_panel(workspace);
   data->workspace = workspace;
 }
 

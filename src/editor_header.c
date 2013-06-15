@@ -9,15 +9,41 @@
 #include <eol_logger.h>
 #include <eol_graphics.h>
 #include <eol_window.h>
+#include <eol_loader.h>
 
 typedef struct
 {
   eolWindow *workspace;
+  eolLine    projectPath;
 }editorHeaderData;
 
 /*local global variabls*/
 
 /*local function prototypes*/
+
+editorHeaderData *editor_header_get_data(eolWindow *win)
+{
+  if (!win)return NULL;
+  return (editorHeaderData *)win->customData;
+}
+
+void editor_header_new_path(void *data)
+{
+  eolWindow *win;
+  eolComponent *comp = NULL;
+  editorHeaderData *headerData;
+  if (!data)return;
+  win = (eolWindow*)data;
+  headerData = editor_header_get_data(win);
+  if (!headerData)return;
+  comp = eol_window_get_component_by_name(win,"path_name");
+  if (comp)
+  {
+    eol_label_set_text(comp,headerData->projectPath);
+  }
+  eol_loader_add_write_path(headerData->projectPath,headerData->projectPath);
+}
+
 void editor_on_title_change(void *data)
 {
   eolWindow *win;
@@ -83,6 +109,17 @@ eolBool editor_header_update(eolWindow *win,GList *updates)
     {
         editor_view_menu_window(header->workspace);
         return eolTrue;
+    }
+    if (eol_line_cmp(comp->name,"path_button")==0)
+    {
+      eol_dialog_text_prompt(header->projectPath,
+                             EOLLINELEN,
+                             EOLLINELEN,  /*0 means no limit*/
+                             "Enter the path for the project:",
+                             win,
+                             editor_header_new_path,
+                             NULL);
+      return eolTrue;
     }
   }
   return eolFalse;

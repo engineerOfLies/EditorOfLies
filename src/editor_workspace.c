@@ -214,6 +214,71 @@ void editor_workspace_select_layer(eolWindow *workspace,eolUint layer)
   editor_workspace_level_modified(workspace);
 }
 
+void editor_workspace_hide_background(eolWindow *workspace,eolUint backgroundIndex,eolBool hide)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  eol_level_hide_background(wsData->activeLayer,backgroundIndex,hide);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_add_background(eolWindow *workspace,eolLine modelFile)
+{
+  eolModel *model;
+  eolBackground *background;
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  if (!wsData->activeLayer)return;
+  model = eol_model_load(modelFile);
+  if (!model)return;
+  background = eol_level_add_background_to_layer(wsData->activeLayer);
+  if (!background)
+  {
+    eol_model_free(&model);
+    return;
+  }
+  background->model = model;
+  eol_line_cpy(background->modelFile,modelFile);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_move_background_down(eolWindow *workspace,eolUint backgroundIndex)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  eol_level_move_background_down(wsData->activeLayer,backgroundIndex);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_move_background_up(eolWindow *workspace,eolUint backgroundIndex)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  eol_level_move_background_up(wsData->activeLayer,backgroundIndex);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_delete_background(eolWindow *workspace,eolUint backgroundIndex)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  eol_level_delete_background(wsData->activeLayer,backgroundIndex);
+  editor_workspace_level_modified(workspace);
+}
+
+eolBackground *editor_workspace_get_background(eolWindow *workspace,eolUint index)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return NULL;
+  return eol_level_get_background(wsData->activeLayer,index);
+}
+
 EditorWorkspace *editor_get_workspace(eolWindow *workspace)
 {
   if (!workspace)return NULL;

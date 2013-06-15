@@ -64,6 +64,15 @@ void editor_workspace_rename_layer(eolWindow *workspace,eolUint layer,eolLine ne
  */
 eolLevelLayer *editor_workspace_get_layer(eolWindow *workspace,eolUint layerIndex);
 
+/*background operations*/
+
+eolBackground *editor_workspace_get_background(eolWindow *workspace,eolUint index);
+void editor_workspace_delete_background(eolWindow *workspace,eolUint backgroundIndex);
+void editor_workspace_add_background(eolWindow *workspace,eolLine modelFile);
+void editor_workspace_hide_background(eolWindow *workspace,eolUint index,eolBool hide);
+void editor_workspace_move_background_up(eolWindow *workspace,eolUint backgroundIndex);
+void editor_workspace_move_background_down(eolWindow *workspace,eolUint backgroundIndex);
+
 /*maintaining updates*/
 eolBool editor_workspace_updated(eolWindow *workspace);
 eolBool editor_workspace_modified(eolWindow *workspace);

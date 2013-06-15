@@ -2,7 +2,7 @@
 name:         edit_panel
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
-rect:         -260,48,0,0
+rect:         -280,48,0,0
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  True

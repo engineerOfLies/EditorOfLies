@@ -213,8 +213,7 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
   return eolFalse;
 }
 
-
-void editor_layer_panel_draw(eolWindow *win)
+void editor_layer_panel_workspace_sync(eolWindow *win)
 {
   int i = 0;
   GList *l;
@@ -228,8 +227,7 @@ void editor_layer_panel_draw(eolWindow *win)
   list = eol_window_get_component_by_name(win,"layer_list");
   if ((list)
     &&(workspace)
-    &&(workspace->level)
-    &&(editor_workspace_updated(layerData->workspace)))
+    &&(workspace->level))
   {
     eol_component_list_clear(list);
     for (l = workspace->level->layers;l != NULL; l = l->next)
@@ -239,7 +237,17 @@ void editor_layer_panel_draw(eolWindow *win)
       eol_list_add_text_item(list,i++,layer->idName);
     }
   }
-  
+}
+
+void editor_layer_panel_draw(eolWindow *win)
+{
+  editorLayerData *layerData;
+  layerData = editor_layer_get_data(win);
+  if (!layerData)return;
+  if (editor_workspace_updated(layerData->workspace))
+  {
+    editor_layer_panel_workspace_sync(win);
+  }
 }
 
 eolWindow *editor_layer_panel(eolWindow *workspace)
