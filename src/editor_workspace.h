@@ -55,6 +55,9 @@ void editor_workspace_add_layer(eolWindow *workspace);
 void editor_workspace_delete_layer(eolWindow *workspace,eolUint layer);
 void editor_workspace_select_layer(eolWindow *workspace,eolUint layer);
 void editor_workspace_hide_layer(eolWindow *workspace, eolUint layer, eolBool hide);
+void editor_workspace_move_layer_up(eolWindow *workspace,eolUint layer);
+void editor_workspace_move_layer_down(eolWindow *workspace,eolUint layer);
+void editor_workspace_rename_layer(eolWindow *workspace,eolUint layer,eolLine newName);
 
 /**
  * @brief gets the layer by the index, or NULL if non existant

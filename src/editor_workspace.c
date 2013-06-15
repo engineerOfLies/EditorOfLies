@@ -178,6 +178,32 @@ void editor_workspace_delete_layer(eolWindow *workspace,eolUint layer)
   editor_workspace_level_modified(workspace);
 }
 
+void editor_workspace_move_layer_up(eolWindow *workspace,eolUint layer)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_move_layer_n_up(wsData->level,layer);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_move_layer_down(eolWindow *workspace,eolUint layer)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_move_layer_n_down(wsData->level,layer);
+  editor_workspace_level_modified(workspace);
+}
+
+void editor_workspace_rename_layer(eolWindow *workspace,eolUint layer,eolLine newName)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  eol_level_rename_layer_n(wsData->level,layer, newName);
+  editor_workspace_level_modified(workspace);
+}
 
 void editor_workspace_select_layer(eolWindow *workspace,eolUint layer)
 {
