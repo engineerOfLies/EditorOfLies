@@ -1,5 +1,5 @@
-#ifndef __EDITOR_BACKGROUNDPANEL__
-#define __EDITOR_BACKGROUNDPANEL__
+#ifndef __EDITOR_ORIENTATION__
+#define __EDITOR_ORIENTATION__
 /*
 Copyright 2012 EngineerOfLies
 This file is part of the Engine of Lies game engine library and Editor of Lies
@@ -22,10 +22,21 @@ see <http://www.gnu.org/licenses/>.
 
 #include <eol_window.h>
 
+/**
+ * @brief set up default orientation for the window
+ * @param ori default orientation
+ * @param callback a function to call when the orientation changes
+ */
+eolWindow *editor_orientation_edit();
 
-eolWindow * editor_background_panel(eolWindow * workspace);
-void editor_background_workspace_sync(eolWindow *win);
-void editor_background_orientation_update(void *data,eolOrientation ori);
-void editor_background_setup_ori_edit(eolWindow *win,eolWindow *ori_edit);
+void editor_orientation_update_callback(
+  eolWindow *win,
+  eolOrientation ori,
+  void *callbackData,
+  void(*callback)(void *data,eolOrientation ori));
+
+void editor_orientation_update_ori(
+  eolWindow *win,
+  eolOrientation ori);
 
 #endif

@@ -1,0 +1,127 @@
+#editor orientation editor
+name:         edit_backgrounds_panel
+# a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
+# width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
+rect:         -280,-300,0,0
+canHasFocus:  True
+drawGeneric:  True
+passesInput:  True
+components:
+  - type:       LABEL
+    id:         10
+    name:       title
+    rect:       0.5,0.01,1,1
+    text:       Orientation
+    justify:    CENTER
+  - type:       LABEL
+    id:         11
+    name:       operation
+    rect:       0.5,0.1,1,1
+    text:       operation
+    justify:    CENTER
+  - type:       BUTTON
+    name:       beginScale
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     s
+  - type:       BUTTON
+    name:       beginGrab
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     g
+  - type:       BUTTON
+    name:       beginRotate
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     r
+  - type:       BUTTON
+    name:       xLock
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     x
+  - type:       BUTTON
+    name:       yLock
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     y
+  - type:       BUTTON
+    name:       zLock
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     z
+  - type:       BUTTON
+    name:       cancel
+    buttonType: TEXT
+    hidden:     true
+    buttonText: ' '
+    hotkey:     ESC
+  - type:             LIST
+    listType:         text
+    name:             orientation
+    allowSelection:   false
+    showBackground:   true
+    showBoarder:      true
+    id:               1000
+    rect:             0.01,0.2,0.99,0.6
+    showVSlider:      false
+    showHSlider:      false
+    items:
+    - type:       BUTTON
+      name:       position
+      justify:    CENTER
+      buttonText: 'Position ()'
+      buttonType: TEXT
+      fontSize:   2
+    - type:       BUTTON
+      name:       rotation
+      justify:    CENTER
+      buttonText: 'Rotation ()'
+      buttonType: TEXT
+      fontSize:   2
+    - type:       BUTTON
+      name:       scale
+      justify:    CENTER
+      buttonText: 'Scale ()'
+      buttonType: TEXT
+      fontSize:   2
+    - type:       BUTTON
+      name:       color
+      justify:    CENTER
+      buttonText: 'Color ()'
+      buttonType: TEXT
+      fontSize:   2
+    - type:       BUTTON
+      name:       alpha
+      justify:    CENTER
+      buttonText: 'Alpha'
+      buttonType: TEXT
+      fontSize:   2
+  - type:             LIST
+    listType:         dock
+    name:             actions
+    allowSelection:   false
+    showBackground:   false
+    showBoarder:      false
+    id:               1001
+    rect:             0.01,0.7,0.9,1
+    itemDimensions:   112,48
+    itemPadding:      2,2
+    showVSlider:      false
+    showHSlider:      false
+    items:
+    - type:       BUTTON
+      name:       copy
+      justify:    CENTER
+      buttonText: 'Copy'
+      buttonType: STOCK
+    - type:       BUTTON
+      name:       paste
+      justify:    CENTER
+      buttonText: 'Paste'
+      buttonType: STOCK

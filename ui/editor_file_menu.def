@@ -4,7 +4,7 @@ name:         file_menu
 #bottom by the number.  so rect.x = -100 means to draw x = screen.w - x
 # width or height of 0 means fill screen.  Anything less than 0 means 
 # full screen less than the width specified
-rect:         0.05,54,150,180
+rect:         0.05,54,150,200
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  False

@@ -1,4 +1,5 @@
 #include "editor_background_panel.h"
+#include "editor_orientation_edit.h"
 #include "editor_workspace.h"
 #include <eol_dialog.h>
 #include <eol_logger.h>
@@ -7,6 +8,7 @@ typedef struct
 {
   eolWindow *workspace;
   eolLine textBuffer;
+  eolWindow *orientationWindow;
 }editorBackgroundData;
 
 editorBackgroundData *editor_background_get_data(eolWindow *win)
@@ -16,10 +18,11 @@ editorBackgroundData *editor_background_get_data(eolWindow *win)
   return (editorBackgroundData*)win->customData;
 }
 
-void editor_background_load(void *data)
+void editor_background_orientation_update(void *data,eolOrientation ori)
 {
   eolWindow *win;
   eolComponent *comp = NULL;
+  eolBackground *background;
   editorBackgroundData *backgroundData;
   eolUint index = 0;
   if (!data)return;
@@ -29,8 +32,23 @@ void editor_background_load(void *data)
   comp = eol_window_get_component_by_name(win,"background_list");
   if(eol_component_list_get_selected_id(&index,comp))
   {
-    editor_workspace_add_background(backgroundData->workspace,backgroundData->textBuffer);
+    background = editor_workspace_get_background(backgroundData->workspace,index);
+    if (background)
+    {
+      eol_orientation_copy(&background->ori,ori);
+    }
   }
+}
+
+void editor_background_load(void *data)
+{
+  eolWindow *win;
+  editorBackgroundData *backgroundData;
+  if (!data)return;
+  win = (eolWindow*)data;
+  backgroundData = editor_background_get_data(win);
+  if (!backgroundData)return;
+  editor_workspace_add_background(backgroundData->workspace,backgroundData->textBuffer);
 }
 
 void editor_background_delete(void *data)
@@ -71,8 +89,16 @@ eolBool editor_background_panel_update(eolWindow *win,GList *updates)
       hideButton = eol_component_list_get_item_by_name(hideButton,"hide_background");
       if (!hideButton)continue;
       if(eol_component_list_get_selected_id(&index,comp))
-      {
+      {      
         background = editor_workspace_get_background(backgroundData->workspace,index);
+        if (background)
+        {
+          editor_orientation_update_callback(
+            backgroundData->orientationWindow,
+            background->ori,
+            win,
+            editor_background_orientation_update);
+        }
         if ((!background)||(!background->hidden))
         {
           eol_button_set_text(hideButton,"Hide Background");
@@ -85,6 +111,11 @@ eolBool editor_background_panel_update(eolWindow *win,GList *updates)
       else
       {
         eol_button_set_text(hideButton,"Hide Background");
+        editor_orientation_update_callback(
+          backgroundData->orientationWindow,
+          background->ori,
+          NULL,
+          NULL);
       }
       continue;
     }
@@ -210,6 +241,14 @@ void editor_background_panel_draw(eolWindow *win)
   {
     editor_background_workspace_sync(win);
   }
+}
+
+void editor_background_setup_ori_edit(eolWindow *win,eolWindow *ori_edit)
+{
+  editorBackgroundData *backgroundData;
+  backgroundData = editor_background_get_data(win);
+  if (!backgroundData)return;
+  backgroundData->orientationWindow = ori_edit;
 }
 
 eolWindow *editor_background_panel(eolWindow *workspace)

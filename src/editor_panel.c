@@ -1,6 +1,7 @@
 #include "editor_panel.h"
 #include "editor_layer_panel.h"
 #include "editor_background_panel.h"
+#include "editor_orientation_edit.h"
 
 #include <eol_dialog.h>
 #include <eol_logger.h>
@@ -21,6 +22,7 @@ typedef struct
   eolUint     mode;
   eolWindow * childwindow[eolPanelModeMax];
   eolWindow * workspace;
+  eolWindow * orientationEditor;
 }eolEditorPanelData;
 /*local global variabls*/
 
@@ -128,9 +130,13 @@ void editor_panel_window(eolWindow *workspace)
   if (win->customData == NULL)return;
   memset(win->customData,0,sizeof(eolEditorPanelData));
   data = (eolEditorPanelData*)win->customData;
+  
   data->childwindow[eolPanelModeLayer] = editor_layer_panel(workspace);
   data->childwindow[eolPanelModeBackground] = editor_background_panel(workspace);
   data->workspace = workspace;
+  data->orientationEditor = editor_orientation_edit();
+
+  editor_background_setup_ori_edit(data->childwindow[eolPanelModeBackground],data->orientationEditor );
 }
 
 /*eol@eof*/

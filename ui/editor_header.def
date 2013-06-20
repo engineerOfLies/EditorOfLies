@@ -43,21 +43,6 @@ components:
     fontSize:   4
     color:      1,1,1
     alpha:      1
-  - type:       BUTTON
-    buttonText: 'Project Path :'
-    buttonType: TEXT
-    name:       path_button
-    rect:       0.18,0.1,1,1
-    justify:    RIGHT
-  - type:       LABEL
-    name:       path_name
-    rect:       0.26,0.1,1,1
-    text:       '[no path]'
-    justify:    LEFT
-    wordWrap:   False
-    fontSize:   3
-    color:      1,1,1
-    alpha:      1
   - type:       LABEL
     id:         11
     name:       level_label
