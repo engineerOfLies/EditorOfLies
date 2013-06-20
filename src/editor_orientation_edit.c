@@ -3,6 +3,7 @@
 
 #include <eol_mouse.h>
 #include <eol_dialog.h>
+#include <eol_draw.h>
 #include <eol_input.h>
 #include <eol_logger.h>
 #include <eol_graphics.h>
@@ -192,6 +193,7 @@ void editor_orientation_set_mode(eolWindow *win,eolUint mode)
     /*cache starting value*/
     eol_orientation_copy(&oriData->oldOri,oriData->ori);
   }
+    
   oriData->omMode = mode;
   /*get starting mouse position for motion based changes*/
   eol_mouse_get_position_vec2d(&oriData->mouseBegin);
@@ -303,7 +305,38 @@ eolBool editor_orientation_update(eolWindow *win,GList *updates)
       return eolTrue;
     }
   }
+  if (eol_mouse_input_state(eolMouseRight))
+  {
+    editor_orientation_cancel_op(win);
+    return eolTrue;
+  }
   return eolFalse;
+}
+
+eolFloat editor_fine_snap(eolFloat in,eolBool fineMode, eolBool snapMode)
+{
+  eolInt  tempInt;
+  eolFloat tempFloat;
+  eolFloat diff;
+  if (snapMode)
+  {
+    if (fineMode)
+    {
+      tempFloat = in * 10;
+    }
+    else tempFloat = in;
+    tempInt = (eolInt)tempFloat;
+    diff = in - tempInt;
+    if (diff > 0.5)tempInt++;
+    if (fineMode)
+    {
+      tempFloat = tempInt;
+      tempFloat *= 0.1;
+      return tempFloat;
+    }
+    return (eolFloat)tempInt;
+  }
+  return in;
 }
 
 void editor_orientation_draw(eolWindow *win)
@@ -311,8 +344,13 @@ void editor_orientation_draw(eolWindow *win)
   /*draw happend every frame, so here is where we update mouse based updates*/
   eolVec2D mouseNow;
   OriData *oriData;
+  eolBool snapMode = eolFalse;
+  eolBool  fineMode = eolFalse;
   eolFloat moveFactor = 0.01;
   eolFloat rotateFactor = 0.1;
+  eolFloat scaleLimit = 0.001;
+  eolFloat mouseDistance = 0;
+  eolFloat zeroDistance = 0;
   oriData = editor_orientation_get_data(win);
   if (!oriData)return;
   if (oriData->omMode == OM_NONE)
@@ -320,14 +358,24 @@ void editor_orientation_draw(eolWindow *win)
     /*no need to go further*/
     return;
   }
-  
+  /*TODO take camera distance into consideration as well*/
+  if (eol_input_is_mod_down(KMOD_CTRL))/*snap to whole number*/
+  {
+    snapMode = eolTrue;
+  }
+  if (eol_input_is_mod_down(KMOD_SHIFT))
+  {
+    fineMode = eolTrue;
+  }
   eol_mouse_get_position_vec2d(&mouseNow);
-  
+
   switch(oriData->omMode)
   {
     case OM_GRAB:
       oriData->ori.position.x = oriData->oldOri.position.x + ((mouseNow.x - oriData->mouseBegin.x) * moveFactor);
       oriData->ori.position.y = oriData->oldOri.position.y + ((oriData->mouseBegin.y - mouseNow.y) * moveFactor);
+      oriData->ori.position.x = editor_fine_snap(oriData->ori.position.x,fineMode, snapMode);
+      oriData->ori.position.y = editor_fine_snap(oriData->ori.position.y,fineMode, snapMode);
       editor_orientation_ori_updated(win);
       break;
     case OM_ROT:
@@ -335,8 +383,53 @@ void editor_orientation_draw(eolWindow *win)
       editor_orientation_ori_updated(win);
       break;
     case OM_SCALE:
-      oriData->ori.scale.x = oriData->oldOri.scale.x + ((mouseNow.x - oriData->mouseBegin.x) * moveFactor);
-      oriData->ori.scale.y = oriData->oldOri.scale.y + ((oriData->mouseBegin.y - mouseNow.y) * moveFactor);
+      eol_draw_line_2D(oriData->mouseBegin,mouseNow,1,eol_vec3d(1,0.5,0.5),1);
+      mouseDistance = eol_vec2d_magnitude(eol_vec2d(mouseNow.x - oriData->mouseBegin.x,oriData->mouseBegin.y - mouseNow.y));
+      zeroDistance = 100;
+      if (fineMode && !snapMode)
+      {
+        moveFactor *= 0.1;
+        mouseDistance *= 0.1;
+      }
+      mouseDistance -= zeroDistance;
+      eol_draw_cirlce_2D(oriData->mouseBegin,
+                         zeroDistance,
+                         32,
+                         eol_vec3d(1,1,1),
+                         1);
+      oriData->ori.scale.x = oriData->oldOri.scale.x + (mouseDistance  * moveFactor);
+      oriData->ori.scale.y = oriData->oldOri.scale.y + (mouseDistance  * moveFactor);
+      oriData->ori.scale.x = editor_fine_snap(oriData->ori.scale.x,fineMode, snapMode);
+      oriData->ori.scale.y = editor_fine_snap(oriData->ori.scale.y,fineMode, snapMode);
+      
+      if ((oriData->ori.scale.x >=0) && (oriData->ori.scale.x < scaleLimit))
+      {
+        oriData->ori.scale.x = scaleLimit;
+      }
+      else if ((oriData->ori.scale.x < 0) && (oriData->ori.scale.x > -scaleLimit))
+      {
+        oriData->ori.scale.x = -scaleLimit;
+      }
+
+      if ((oriData->ori.scale.y >=0) && (oriData->ori.scale.y < scaleLimit))
+      {
+        oriData->ori.scale.y = scaleLimit;
+      }
+      else if ((oriData->ori.scale.y < 0) && (oriData->ori.scale.y > -scaleLimit))
+      {
+        oriData->ori.scale.y = -scaleLimit;
+      }
+
+      if ((oriData->ori.scale.z >=0) && (oriData->ori.scale.z < scaleLimit))
+      {
+        oriData->ori.scale.z = scaleLimit;
+      }
+      else if ((oriData->ori.scale.z < 0) && (oriData->ori.scale.z > -scaleLimit))
+      {
+        oriData->ori.scale.z = -scaleLimit;
+      }
+      
+      
       editor_orientation_ori_updated(win);
       break;
     case OM_COLOR:
