@@ -6,6 +6,7 @@ rect:         -280,-300,0,0
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  True
+hidden:       true
 components:
   - type:       LABEL
     id:         10
@@ -109,8 +110,8 @@ components:
     showBackground:   false
     showBoarder:      false
     id:               1001
-    rect:             0.01,0.7,0.9,1
-    itemDimensions:   112,48
+    rect:             0.01,0.8,0.99,1
+    itemDimensions:   60,30
     itemPadding:      2,2
     showVSlider:      false
     showHSlider:      false
@@ -119,9 +120,14 @@ components:
       name:       copy
       justify:    CENTER
       buttonText: 'Copy'
-      buttonType: STOCK
+      buttonType: TEXT
     - type:       BUTTON
       name:       paste
       justify:    CENTER
       buttonText: 'Paste'
-      buttonType: STOCK
+      buttonType: TEXT
+    - type:       BUTTON
+      name:       reset
+      justify:    CENTER
+      buttonText: 'Reset'
+      buttonType: TEXT

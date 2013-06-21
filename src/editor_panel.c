@@ -20,6 +20,7 @@ typedef struct
 {
   eolLine     title;
   eolUint     mode;
+  eolComponent *titleLabel;
   eolWindow * childwindow[eolPanelModeMax];
   eolWindow * workspace;
   eolWindow * orientationEditor;
@@ -27,6 +28,7 @@ typedef struct
 /*local global variabls*/
 
 /*local function prototypes*/
+void editor_panel_hide_all(eolEditorPanelData *data);
 
 
 /*function definitions*/
@@ -35,9 +37,31 @@ void editor_panel_show(eolEditorPanelData *data,eolUint panel)
 {
   if (panel >= eolPanelModeMax)return;
   if (!data)return;
+  editor_panel_hide_all(data);
   eol_window_show(data->childwindow[panel]);
   eol_window_wakeup(data->childwindow[panel]);
+  switch(panel)
+  {
+    case eolPanelModeLayer:
+      eol_label_set_text(data->titleLabel,"Layer Editor");
+      editor_layer_panel_workspace_sync(data->childwindow[eolPanelModeLayer]);
+      break;
+    case eolPanelModeBackground:
+      eol_label_set_text(data->titleLabel,"Background Editor");
+      editor_background_workspace_sync(data->childwindow[eolPanelModeBackground]);
+      break;
+    case eolPanelModeTile:
+      eol_label_set_text(data->titleLabel,"Tile Editor");
+      break;
+    case eolPanelModeMask:
+      eol_label_set_text(data->titleLabel,"Mask Editor");
+      break;
+    case eolPanelModeSpawn:
+      eol_label_set_text(data->titleLabel,"Spawn Editor");
+      break;
+  }
 }
+
 void editor_panel_hide_all(eolEditorPanelData *data)
 {
   int i;
@@ -53,7 +77,6 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
 {
   GList *c;
   GList *l;
-  eolComponent *labelComp = NULL;
   eolComponent *list = NULL;
   eolComponent *comp = NULL;
   eolEditorPanelData *data = NULL;
@@ -63,7 +86,6 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
   {
     if (c->data == NULL)continue;
     list = (eolComponent *)c->data;
-    labelComp = eol_window_get_component_by_id(win,10);
     if (list->id == 1000)
     {
       for (l = eol_list_get_updates(list);l != NULL; l = l->next)
@@ -72,39 +94,27 @@ eolBool editor_panel_update(eolWindow *win,GList *updates)
         comp = (eolComponent *)l->data;
         if (eol_line_cmp(comp->name,"layers_button")==0)
         {
-          editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeLayer);
-          eol_label_set_text(labelComp,"Layer Editor");
-          editor_layer_panel_workspace_sync(data->childwindow[eolPanelModeLayer]);
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"bg_button")==0)
         {
-          editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeBackground);
-          eol_label_set_text(labelComp,"Background Editor");
-          editor_background_workspace_sync(data->childwindow[eolPanelModeBackground]);
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"tile_button")==0)
         {
-          editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeTile);
-          eol_label_set_text(labelComp,"Tile Editor");
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"mask_button")==0)
         {
-          editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeMask);
-          eol_label_set_text(labelComp,"Mask Editor");
           return eolTrue;
         }
         if (eol_line_cmp(comp->name,"spawn_button")==0)
         {
-          editor_panel_hide_all(data);
           editor_panel_show(data,eolPanelModeSpawn);
-          eol_label_set_text(labelComp,"Spawn Editor");
           return eolTrue;
         }
       }
@@ -135,8 +145,9 @@ void editor_panel_window(eolWindow *workspace)
   data->childwindow[eolPanelModeBackground] = editor_background_panel(workspace);
   data->workspace = workspace;
   data->orientationEditor = editor_orientation_edit();
-
+  data->titleLabel = eol_window_get_component_by_name(win,"title");
   editor_background_setup_ori_edit(data->childwindow[eolPanelModeBackground],data->orientationEditor );
+  editor_panel_show(data,eolPanelModeLayer);
 }
 
 /*eol@eof*/

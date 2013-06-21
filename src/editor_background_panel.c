@@ -230,6 +230,11 @@ void editor_background_workspace_sync(eolWindow *win)
       eol_list_add_text_item(list,i++,background->modelFile);
     }
   }
+  editor_orientation_update_callback(
+    backgroundData->orientationWindow,
+    background->ori,
+    NULL,
+    NULL);
 }
 
 void editor_background_panel_draw(eolWindow *win)

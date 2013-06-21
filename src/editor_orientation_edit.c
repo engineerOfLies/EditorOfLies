@@ -65,6 +65,14 @@ OriData *editor_orientation_get_data(eolWindow *win)
   return (OriData*)win->customData;
 }
 
+void editor_orientation_reset_ori(void *data)
+{
+  OriData *oriData;
+  oriData = editor_orientation_get_data((eolWindow *)data);
+  if (!oriData)return;
+  eol_orientation_clear(&oriData->ori);
+}
+
 void editor_orientation_update_callback(
   eolWindow *win,
   eolOrientation ori,
@@ -74,6 +82,14 @@ void editor_orientation_update_callback(
   OriData *oriData;
   oriData = editor_orientation_get_data(win);
   if (!oriData)return;
+  if (!callback)
+  {
+    eol_window_hide(win);
+  }
+  else
+  {
+    eol_window_show(win);
+  }
   oriData->callback = callback;
   oriData->callbackData = callbackData;
   eol_orientation_copy(&oriData->ori,ori);
@@ -155,9 +171,19 @@ void editor_orientation_complete_op(eolWindow *win)
   oriData = editor_orientation_get_data(win);
   if (!oriData)return;
   oriData->omMode = OM_NONE;
+  oriData->secondaryMode = 0;
   editor_orientation_ori_updated(win);
   operationLabel = eol_window_get_component_by_name(win,"operation");
   eol_label_set_text(operationLabel,"Operation");
+}
+
+void editor_orientation_reset_op(eolWindow *win)
+{
+  OriData *oriData;
+  oriData = editor_orientation_get_data(win);
+  if (!oriData)return;
+  if (oriData->omMode == OM_NONE)return;
+  eol_orientation_copy(&oriData->ori,oriData->oldOri);
 }
 
 void editor_orientation_cancel_op(eolWindow *win)
@@ -172,6 +198,7 @@ void editor_orientation_cancel_op(eolWindow *win)
     win,
     oriData->oldOri);
   oriData->omMode = OM_NONE;
+  oriData->secondaryMode = 0;
   operationLabel = eol_window_get_component_by_name(win,"operation");
   eol_label_set_text(operationLabel,"Operation");
 }
@@ -202,12 +229,15 @@ void editor_orientation_set_mode(eolWindow *win,eolUint mode)
   {
     case OM_GRAB:
       eol_label_set_text(operationLabel,"GRAB");
+      oriData->secondaryMode = OA_X | OA_Y;
       break;
     case OM_ROT:
       eol_label_set_text(operationLabel,"ROTATE");
+      oriData->secondaryMode = OA_Z;
       break;
     case OM_SCALE:
       eol_label_set_text(operationLabel,"SCALE");
+      oriData->secondaryMode = OA_X | OA_Y | OA_Z;
       break;
     case OM_COLOR:
       eol_label_set_text(operationLabel,"COLOR TRANSFORM");
@@ -245,6 +275,54 @@ eolBool editor_orientation_update(eolWindow *win,GList *updates)
     {
       editor_orientation_set_mode(win,OM_ROT);
       return eolTrue;
+    }
+    if (eol_line_cmp(comp->name,"xLock")==0)
+    {
+      if (oriData->omMode)
+      {
+        if (eol_input_is_mod_down(KMOD_SHIFT))
+        {
+          oriData->secondaryMode = OA_Z | OA_Y;
+          editor_orientation_reset_op(win);
+        }
+        else
+        {
+          oriData->secondaryMode = OA_X;
+          editor_orientation_reset_op(win);
+        }
+      }
+    }
+    if (eol_line_cmp(comp->name,"yLock")==0)
+    {
+      if (oriData->omMode)
+      {
+        if (eol_input_is_mod_down(KMOD_SHIFT))
+        {
+          oriData->secondaryMode = OA_Z | OA_X;
+          editor_orientation_reset_op(win);
+        }
+        else
+        {
+          oriData->secondaryMode = OA_Y;
+          editor_orientation_reset_op(win);
+        }
+      }
+    }
+    if (eol_line_cmp(comp->name,"zLock")==0)
+    {
+      if (oriData->omMode)
+      {
+        if (eol_input_is_mod_down(KMOD_SHIFT))
+        {
+          oriData->secondaryMode = OA_X | OA_Y;
+          editor_orientation_reset_op(win);
+        }
+        else
+        {
+          oriData->secondaryMode = OA_Z;
+          editor_orientation_reset_op(win);
+        }
+      }
     }
     if (eol_line_cmp(comp->name,"cancel")==0)
     {
@@ -291,6 +369,21 @@ eolBool editor_orientation_update(eolWindow *win,GList *updates)
           else 
           {
             editor_orientation_update_ori(win,oriData->copyOri);
+          }
+          return eolTrue;
+        }
+        if (eol_line_cmp(item->name,"reset")==0)
+        {
+          if (!oriData->callback)
+          {
+            eol_dialog_message("Warning","No Selected Orientation to Reset.");
+          }
+          else
+          {
+            eol_dialog_yes_no("Reset Selected Orientation?",
+                              win,
+                              editor_orientation_reset_ori,
+                              NULL);
           }
           return eolTrue;
         }
@@ -347,10 +440,11 @@ void editor_orientation_draw(eolWindow *win)
   eolBool snapMode = eolFalse;
   eolBool  fineMode = eolFalse;
   eolFloat moveFactor = 0.01;
-  eolFloat rotateFactor = 0.1;
   eolFloat scaleLimit = 0.001;
   eolFloat mouseDistance = 0;
   eolFloat zeroDistance = 0;
+  eolFloat rotAngle = 0;
+  eolVec2D mouseVector = {0,0};
   oriData = editor_orientation_get_data(win);
   if (!oriData)return;
   if (oriData->omMode == OM_NONE)
@@ -368,23 +462,59 @@ void editor_orientation_draw(eolWindow *win)
     fineMode = eolTrue;
   }
   eol_mouse_get_position_vec2d(&mouseNow);
-
+  eol_vec2d_set(mouseVector,(mouseNow.x - oriData->mouseBegin.x),(oriData->mouseBegin.y - mouseNow.y));
   switch(oriData->omMode)
   {
     case OM_GRAB:
-      oriData->ori.position.x = oriData->oldOri.position.x + ((mouseNow.x - oriData->mouseBegin.x) * moveFactor);
-      oriData->ori.position.y = oriData->oldOri.position.y + ((oriData->mouseBegin.y - mouseNow.y) * moveFactor);
-      oriData->ori.position.x = editor_fine_snap(oriData->ori.position.x,fineMode, snapMode);
-      oriData->ori.position.y = editor_fine_snap(oriData->ori.position.y,fineMode, snapMode);
+      if (oriData->secondaryMode & OA_X)
+      {
+        oriData->ori.position.x = oriData->oldOri.position.x + (mouseVector.x * moveFactor);
+        oriData->ori.position.x = editor_fine_snap(oriData->ori.position.x,fineMode, snapMode);
+      }
+      if (oriData->secondaryMode & OA_Y)
+      {
+        oriData->ori.position.y = oriData->oldOri.position.y + (mouseVector.y * moveFactor);
+        oriData->ori.position.y = editor_fine_snap(oriData->ori.position.y,fineMode, snapMode);
+      }
+      if (oriData->secondaryMode & OA_Z)
+      {
+        oriData->ori.position.z = oriData->oldOri.position.z + (mouseVector.y * moveFactor);
+        oriData->ori.position.z = editor_fine_snap(oriData->ori.position.z,fineMode, snapMode);
+      }
       editor_orientation_ori_updated(win);
       break;
     case OM_ROT:
-      oriData->ori.rotation.z = oriData->oldOri.rotation.z + ((oriData->mouseBegin.y - mouseNow.y) * rotateFactor);
+      eol_draw_line_2D(oriData->mouseBegin,mouseNow,1,eol_vec3d(0.5,1,0.5),1);
+      eol_draw_line_2D(oriData->mouseBegin,eol_vec2d(oriData->mouseBegin.x + 100,oriData->mouseBegin.y),1,eol_vec3d(1,1,1),1);
+      rotAngle = eol_vec2d_angle(mouseVector) - 180;
+      rotAngle = editor_fine_snap(rotAngle * 0.2,fineMode,snapMode) * 5;
+      if (fineMode && !snapMode)
+      {
+        rotAngle *= 0.1;
+      }
+      
+      if (oriData->secondaryMode & OA_X)
+      {
+        oriData->ori.rotation.x = oriData->oldOri.rotation.x + rotAngle;
+      }
+      if (oriData->secondaryMode & OA_Y)
+      {
+        oriData->ori.rotation.y = oriData->oldOri.rotation.y + rotAngle;
+      }
+      if (oriData->secondaryMode & OA_Z)
+      {
+        oriData->ori.rotation.z = oriData->oldOri.rotation.z + rotAngle;
+      }
       editor_orientation_ori_updated(win);
+      eol_draw_cirlce_2D(oriData->mouseBegin,
+                         100,
+                         32,
+                         eol_vec3d(1,1,1),
+                         1);
       break;
     case OM_SCALE:
       eol_draw_line_2D(oriData->mouseBegin,mouseNow,1,eol_vec3d(1,0.5,0.5),1);
-      mouseDistance = eol_vec2d_magnitude(eol_vec2d(mouseNow.x - oriData->mouseBegin.x,oriData->mouseBegin.y - mouseNow.y));
+      mouseDistance = eol_vec2d_magnitude(mouseVector);
       zeroDistance = 100;
       if (fineMode && !snapMode)
       {
@@ -397,10 +527,22 @@ void editor_orientation_draw(eolWindow *win)
                          32,
                          eol_vec3d(1,1,1),
                          1);
-      oriData->ori.scale.x = oriData->oldOri.scale.x + (mouseDistance  * moveFactor);
-      oriData->ori.scale.y = oriData->oldOri.scale.y + (mouseDistance  * moveFactor);
-      oriData->ori.scale.x = editor_fine_snap(oriData->ori.scale.x,fineMode, snapMode);
-      oriData->ori.scale.y = editor_fine_snap(oriData->ori.scale.y,fineMode, snapMode);
+
+      if (oriData->secondaryMode & OA_X)
+      {
+        oriData->ori.scale.x = oriData->oldOri.scale.x + (mouseDistance  * moveFactor);
+        oriData->ori.scale.x = editor_fine_snap(oriData->ori.scale.x,fineMode, snapMode);
+      }
+      if (oriData->secondaryMode & OA_Y)
+      {
+        oriData->ori.scale.y = oriData->oldOri.scale.y + (mouseDistance  * moveFactor);
+        oriData->ori.scale.y = editor_fine_snap(oriData->ori.scale.y,fineMode, snapMode);
+      }
+      if (oriData->secondaryMode & OA_Z)
+      {
+        oriData->ori.scale.z = oriData->oldOri.scale.z + (mouseDistance  * moveFactor);
+        oriData->ori.scale.z = editor_fine_snap(oriData->ori.scale.z,fineMode, snapMode);
+      }
       
       if ((oriData->ori.scale.x >=0) && (oriData->ori.scale.x < scaleLimit))
       {
@@ -436,6 +578,31 @@ void editor_orientation_draw(eolWindow *win)
       break;
     case OM_TRANS:
       break;
+  }
+  /*draw axis*/
+  if (oriData->secondaryMode & OA_X)
+  {
+    eol_draw_line_2D(eol_vec2d(oriData->mouseBegin.x - 100,oriData->mouseBegin.y),
+                     eol_vec2d(oriData->mouseBegin.x + 100,oriData->mouseBegin.y),
+                     1,
+                     eol_vec3d(1,0,0),
+                     1);
+  }
+  if (oriData->secondaryMode & OA_Y)
+  {
+    eol_draw_line_2D(eol_vec2d(oriData->mouseBegin.x,oriData->mouseBegin.y - 100),
+                     eol_vec2d(oriData->mouseBegin.x,oriData->mouseBegin.y + 100),
+                     1,
+                     eol_vec3d(0,1,0),
+                     1);
+  }
+  if (oriData->secondaryMode & OA_Z)
+  {
+    eol_draw_line_2D(eol_vec2d(oriData->mouseBegin.x + 50,oriData->mouseBegin.y - 50),
+                     eol_vec2d(oriData->mouseBegin.x - 50,oriData->mouseBegin.y + 50),
+                     1,
+                     eol_vec3d(0,0,1),
+                     1);
   }
 }
 
