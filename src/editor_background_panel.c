@@ -95,7 +95,7 @@ eolBool editor_background_panel_update(eolWindow *win,GList *updates)
         {
           editor_orientation_update_callback(
             backgroundData->orientationWindow,
-            background->ori,
+            &background->ori,
             win,
             editor_background_orientation_update);
         }
@@ -113,7 +113,7 @@ eolBool editor_background_panel_update(eolWindow *win,GList *updates)
         eol_button_set_text(hideButton,"Hide Background");
         editor_orientation_update_callback(
           backgroundData->orientationWindow,
-          background->ori,
+          NULL,
           NULL,
           NULL);
       }
@@ -232,7 +232,7 @@ void editor_background_workspace_sync(eolWindow *win)
   }
   editor_orientation_update_callback(
     backgroundData->orientationWindow,
-    background->ori,
+    NULL,
     NULL,
     NULL);
 }

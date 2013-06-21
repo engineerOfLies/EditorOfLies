@@ -31,7 +31,7 @@ eolWindow *editor_orientation_edit();
 
 void editor_orientation_update_callback(
   eolWindow *win,
-  eolOrientation ori,
+  eolOrientation *ori,
   void *callbackData,
   void(*callback)(void *data,eolOrientation ori));
 

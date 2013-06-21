@@ -75,7 +75,7 @@ void editor_orientation_reset_ori(void *data)
 
 void editor_orientation_update_callback(
   eolWindow *win,
-  eolOrientation ori,
+  eolOrientation *ori,
   void *callbackData,
   void(*callback)(void *data,eolOrientation ori))
 {
@@ -92,7 +92,10 @@ void editor_orientation_update_callback(
   }
   oriData->callback = callback;
   oriData->callbackData = callbackData;
-  eol_orientation_copy(&oriData->ori,ori);
+  if (ori)
+  {
+    eol_orientation_copy(&oriData->ori,*ori);
+  }
   editor_orientation_ori_updated(win);
 }
 

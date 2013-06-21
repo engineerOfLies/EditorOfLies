@@ -1,5 +1,6 @@
 #include "editor_layer_panel.h"
 #include "editor_workspace.h"
+#include "editor_orientation_edit.h"
 #include <eol_dialog.h>
 #include <eol_logger.h>
 
@@ -7,6 +8,7 @@ typedef struct
 {
   eolWindow *workspace;
   eolLine textBuffer;
+  eolWindow *orientationWindow;
 }editorLayerData;
 
 editorLayerData *editor_layer_get_data(eolWindow *win)
@@ -14,6 +16,28 @@ editorLayerData *editor_layer_get_data(eolWindow *win)
   if (!win)return NULL;
   if (eol_line_cmp(win->name,"edit_layer_panel")!=0)return NULL;/*duck typing!*/
   return (editorLayerData*)win->customData;
+}
+
+void editor_layer_orientation_update(void *data,eolOrientation ori)
+{
+  eolWindow *win;
+  eolComponent *comp = NULL;
+  eolLevelLayer *layer;
+  editorLayerData *layerData;
+  eolUint index = 0;
+  if (!data)return;
+  win = (eolWindow*)data;
+  layerData = editor_layer_get_data(win);
+  if (!layerData)return;
+  comp = eol_window_get_component_by_name(win,"layer_list");
+  if(eol_component_list_get_selected_id(&index,comp))
+  {
+    layer = editor_workspace_get_layer(layerData->workspace,index);
+    if (layer)
+    {
+      eol_orientation_copy(&layer->ori,ori);
+    }
+  }
 }
 
 void editor_layer_delete(void *data)
@@ -74,6 +98,14 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
       if(eol_component_list_get_selected_id(&index,comp))
       {
         layer = editor_workspace_get_layer(layerData->workspace,index);
+        if (layer)
+        {
+          editor_orientation_update_callback(
+            layerData->orientationWindow,
+            &layer->ori,
+            win,
+            editor_layer_orientation_update);
+        }
         if ((!layer)||(!layer->hidden))
         {
           eol_button_set_text(hideButton,"Hide Layer");
@@ -86,6 +118,11 @@ eolBool editor_layer_panel_update(eolWindow *win,GList *updates)
       else
       {
         eol_button_set_text(hideButton,"Hide Layer");
+        editor_orientation_update_callback(
+          layerData->orientationWindow,
+          NULL,
+          NULL,
+          NULL);
       }
       continue;
     }
@@ -237,6 +274,11 @@ void editor_layer_panel_workspace_sync(eolWindow *win)
       eol_list_add_text_item(list,i++,layer->idName);
     }
   }
+  editor_orientation_update_callback(
+    layerData->orientationWindow,
+    NULL,
+    NULL,
+    NULL);
 }
 
 void editor_layer_panel_draw(eolWindow *win)
@@ -248,6 +290,14 @@ void editor_layer_panel_draw(eolWindow *win)
   {
     editor_layer_panel_workspace_sync(win);
   }
+}
+
+void editor_layer_setup_ori_edit(eolWindow *win,eolWindow *ori_edit)
+{
+  editorLayerData *layerData;
+  layerData = editor_layer_get_data(win);
+  if (!layerData)return;
+  layerData->orientationWindow = ori_edit;
 }
 
 eolWindow *editor_layer_panel(eolWindow *workspace)

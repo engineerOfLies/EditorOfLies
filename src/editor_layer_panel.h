@@ -25,6 +25,7 @@ see <http://www.gnu.org/licenses/>.
 
 eolWindow * editor_layer_panel(eolWindow * workspace);
 void editor_layer_panel_workspace_sync(eolWindow *win);
+void editor_layer_setup_ori_edit(eolWindow *win,eolWindow *ori_edit);
 
 
 #endif

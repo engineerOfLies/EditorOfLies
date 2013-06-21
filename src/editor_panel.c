@@ -146,7 +146,10 @@ void editor_panel_window(eolWindow *workspace)
   data->workspace = workspace;
   data->orientationEditor = editor_orientation_edit();
   data->titleLabel = eol_window_get_component_by_name(win,"title");
+  
+  editor_layer_setup_ori_edit(data->childwindow[eolPanelModeLayer],data->orientationEditor );
   editor_background_setup_ori_edit(data->childwindow[eolPanelModeBackground],data->orientationEditor );
+  
   editor_panel_show(data,eolPanelModeLayer);
 }
 
