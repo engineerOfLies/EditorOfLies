@@ -71,6 +71,7 @@ void editor_orientation_reset_ori(void *data)
   oriData = editor_orientation_get_data((eolWindow *)data);
   if (!oriData)return;
   eol_orientation_clear(&oriData->ori);
+  editor_orientation_ori_updated((eolWindow *)data);
 }
 
 void editor_orientation_update_callback(

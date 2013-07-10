@@ -1,0 +1,52 @@
+#editor tile panel definition
+name:         edit_tile_panel
+# a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
+# width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
+rect:         -280,150,0,0
+canHasFocus:  True
+drawGeneric:  True
+passesInput:  True
+components:
+  - type:       BUTTON
+    name:       mode_button
+    id:         1
+    rect:       0.5,0.01,1,1
+    hotkey:     TAB
+    justify:    CENTER
+    buttonText: 'Tile Paint Mode'
+    buttonType: TEXT
+  - type:         LIST
+    listType:     dock
+    name:         tile_type_list
+    id:           100
+    rect:         0.01,0.05,0.99,54
+    itemDimensions:   48,48
+    itemPadding:      2,2
+    showVSlider:  false
+    showHSlider:  true
+  - type:             LIST
+    listType:         text
+    name:             tile_actions
+    allowSelection:   false
+    showBackground:   true
+    showBoarder:      true
+    id:               1000
+    rect:             0.01,0.16,0.8,0.4
+    showVSlider:      false
+    showHSlider:      false
+    items:
+    - type:       BUTTON
+      name:       load_tile_type
+      id:         1
+      buttonText: "Load Tile Type"
+      buttonType: TEXT
+    - type:       BUTTON
+      name:       new_tile_type
+      id:         2
+      buttonText: "New Tile Type"
+      buttonType: TEXT
+    - type:       BUTTON
+      name:       edit_tile_type
+      id:         3
+      buttonText: "Edit Tile Type"
+      buttonType: TEXT

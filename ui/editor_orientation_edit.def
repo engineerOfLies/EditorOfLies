@@ -75,31 +75,26 @@ components:
     items:
     - type:       BUTTON
       name:       position
-      justify:    CENTER
       buttonText: 'Position ()'
       buttonType: TEXT
       fontSize:   2
     - type:       BUTTON
       name:       rotation
-      justify:    CENTER
       buttonText: 'Rotation ()'
       buttonType: TEXT
       fontSize:   2
     - type:       BUTTON
       name:       scale
-      justify:    CENTER
       buttonText: 'Scale ()'
       buttonType: TEXT
       fontSize:   2
     - type:       BUTTON
       name:       color
-      justify:    CENTER
       buttonText: 'Color ()'
       buttonType: TEXT
       fontSize:   2
     - type:       BUTTON
       name:       alpha
-      justify:    CENTER
       buttonText: 'Alpha'
       buttonType: TEXT
       fontSize:   2
@@ -118,16 +113,13 @@ components:
     items:
     - type:       BUTTON
       name:       copy
-      justify:    CENTER
       buttonText: 'Copy'
       buttonType: TEXT
     - type:       BUTTON
       name:       paste
-      justify:    CENTER
       buttonText: 'Paste'
       buttonType: TEXT
     - type:       BUTTON
       name:       reset
-      justify:    CENTER
       buttonText: 'Reset'
       buttonType: TEXT

@@ -2,7 +2,7 @@
 name:         __workspace__
 # a negative x or y position means to draw from the right or bottom by the number.  so rect.x = -100 means to draw x = screen.w - x;
 # width or height of 0 means fill screen.  Anything less than 0 means full screen less than the width specified
-rect:         0,48,-100,0
+rect:         0,48,1320,0
 canHasFocus:  True
 drawGeneric:  False
 #components:

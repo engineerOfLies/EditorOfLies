@@ -28,42 +28,35 @@ components:
       - type:       BUTTON
         name:       new_layer
         id:         1
-        justify:    CENTER
         buttonText: Add Layer
         buttonType: TEXT
       - type:       BUTTON
         name:       move_layer_up
         id:         2
-        justify:    CENTER
         buttonText: Move Layer Up
         buttonType: TEXT
       - type:       BUTTON
         name:       move_layer_down
         id:         3
-        justify:    CENTER
         buttonText: Move Layer Down
         buttonType: TEXT
       - type:       BUTTON
         name:       delete_layer
         id:         4
-        justify:    CENTER
         buttonText: Delete Layer
         buttonType: TEXT
       - type:       BUTTON
         name:       rename_layer
         id:         5
-        justify:    CENTER
         buttonText: Rename Layer
         buttonType: TEXT
       - type:       BUTTON
         name:       make_active
         id:         6
-        justify:    CENTER
         buttonText: Select Layer
         buttonType: TEXT
       - type:       BUTTON
         name:       hide_layer
         id:         7
-        justify:    CENTER
         buttonText: Hide Layer
         buttonType: TEXT

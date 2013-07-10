@@ -28,6 +28,11 @@ typedef struct
 {
   eolBool         updated; /**<if modified since last frame*/
   eolBool         modified;/**<if modified since last save*/
+  eolBool         drawTileSelection;  /**<draw the selectedTile*/
+  GList         * selectedTiles;      /**<list of tiles that are seleccted*/
+  eolBool         drawMouseTile;      /**<if this is true, highlight the tile under the mouse*/
+  eolVec3D        selectColor;        /**<color for items that are selected*/
+  eolVec3D        mouseOverColor;     /**<color fow items under the mouse*/
   eolLine         path;
   eolLine         filename;
   eolLevel      * level;
@@ -44,6 +49,8 @@ void editor_workspace_create_new_level(eolWindow *workspace);
 eolLevel * editor_workspace_get_level(eolWindow *workspace);
 
 EditorWorkspace *editor_get_workspace(eolWindow *workspace);
+
+eolBool editor_workspace_mouse_click(eolWindow *workspace);
 
 /*layer operations*/
 
@@ -73,10 +80,41 @@ void editor_workspace_hide_background(eolWindow *workspace,eolUint index,eolBool
 void editor_workspace_move_background_up(eolWindow *workspace,eolUint backgroundIndex);
 void editor_workspace_move_background_down(eolWindow *workspace,eolUint backgroundIndex);
 
+/*tile operations*/
+/**
+ * @brief add a tile to the tile map of the active layer.
+ * NOTE: it will not replace a tile if one is already in the mouse position
+ * @param workspace the workspace to add a tile too
+ * @param tileIndex the index of the tile type to add
+ */
+void editor_workspace_add_mouse_tile(eolWindow *workspace,eolUint tileIndex);
+
+/**
+ * @brief get the tileType by its index from the active level
+ * @param workspace the workspace to search
+ * @param typeId the id of the tile type to seach for
+ * @return NULL on error or not found, a pointer to the tile type otherwise
+ */
+eolTileType *editor_workspace_get_tile_by_id(eolWindow *workspace,eolUint typeId);
+
+/**
+ * @brief enable the highlighting of the tile under the mouse
+ */
+void editor_workspace_show_mouse_over_tile(eolWindow *workspace,eolBool show);
+
+
 /*maintaining updates*/
 eolBool editor_workspace_updated(eolWindow *workspace);
 eolBool editor_workspace_modified(eolWindow *workspace);
 void editor_workspace_clear_updated(eolWindow *workspace);
+
+/**
+ * @brief turn on or off highlighting of the tile the mouse is over
+ * @param workspace set the option here
+ * @param show if eolTrue, show the mouse tile, if eolFalse, don't
+ */
+void editor_workspace_show_mouse_over_tile(eolWindow *workspace,eolBool show);
+void editor_workspace_select_tile(eolWindow *workspace,eolVec2D mousePosition);
 
 /*Loading and saving the level*/
 void editor_workspace_load_level(eolWindow *workspace,eolLine filename);

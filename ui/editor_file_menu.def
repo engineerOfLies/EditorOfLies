@@ -24,6 +24,7 @@ components:
       name:       title
       text:       File...
       wordWrap:   False
+      justify:    LEFT
       fontSize:   3
       color:      1,1,1
       alpha:      1
@@ -33,7 +34,6 @@ components:
       rect:       0.01,0.25,138,1
       hotkey:     n
       hotkeymod:  LAlt
-      justify:    CENTER
       buttonText: New Level
       buttonType: TEXT
     - type:       BUTTON
@@ -42,7 +42,6 @@ components:
       rect:       0.01,0.4,138,1
       hotkey:     s
       hotkeymod:  LCtrl
-      justify:    CENTER
       buttonText: Save Level
       buttonType: TEXT
     - type:       BUTTON
@@ -51,7 +50,6 @@ components:
       rect:       0.01,0.55,138,1
       hotkey:     s
       hotkeymod:  LAlt
-      justify:    CENTER
       buttonText: Save Level As
       buttonType: TEXT
     - type:       BUTTON
@@ -60,7 +58,6 @@ components:
       rect:       0.01,0.7,138,1
       hotkey:     l
       hotkeymod:  LAlt
-      justify:    CENTER
       buttonText: Load Level...
       buttonType: TEXT
     - type:       BUTTON
@@ -69,7 +66,6 @@ components:
       rect:       0.01,0.85,138,1
       hotkey:     q
       hotkeymod:  LAlt
-      justify:    CENTER
       buttonText: Quit Editor
       buttonType: TEXT
 

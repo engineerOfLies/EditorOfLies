@@ -24,7 +24,6 @@ components:
         id:         1
         hotkey:     n
         hotkeymod:  LAlt
-        justify:    CENTER
         buttonText: New Level
         buttonType: TEXT
       - type:       BUTTON
@@ -32,6 +31,5 @@ components:
         id:         2
         hotkey:     s
         hotkeymod:  LCtrl
-        justify:    CENTER
         buttonText: Save Level
         buttonType: TEXT

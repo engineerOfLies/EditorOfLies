@@ -48,7 +48,6 @@ components:
       id:           2
       hotkey:       2
       justify:      LEFT
-      buttonText: 
       buttonImage:  images/UI/backgrounds_btn.png
       buttonHigh:   images/UI/backgrounds_btn_high.png
       buttonHit:    images/UI/backgrounds_btn_hit.png
@@ -58,7 +57,6 @@ components:
       id:           3
       hotkey:       3
       justify:      LEFT
-      buttonText: 
       buttonImage:  images/UI/tiles_btn.png
       buttonHigh:   images/UI/tiles_btn_high.png
       buttonHit:    images/UI/tiles_btn_hit.png
@@ -68,7 +66,6 @@ components:
       id:           4
       hotkey:       4
       justify:      LEFT
-      buttonText: 
       buttonImage:  images/UI/mask_btn.png
       buttonHigh:   images/UI/mask_btn_high.png
       buttonHit:    images/UI/mask_btn_hit.png
@@ -78,9 +75,7 @@ components:
       id:           5
       hotkey:       5
       justify:      LEFT
-      buttonText: 
       buttonImage:  images/UI/spawn_btn.png
       buttonHigh:   images/UI/spawn_btn_high.png
       buttonHit:    images/UI/spawn_btn_hit.png
       buttonType:   CUSTOM
-

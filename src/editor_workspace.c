@@ -1,8 +1,11 @@
 #include "editor_workspace.h"
 #include <eol_dialog.h>
 #include <eol_level.h>
+#include <eol_draw.h>
+#include <eol_3d_op.h>
 #include <eol_entity.h>
 #include <eol_input.h>
+#include <eol_mouse.h>
 #include <eol_camera.h>
 #include <eol_logger.h>
 #include <eol_graphics.h>
@@ -10,10 +13,20 @@
 
 /*local global variabls*/
 
+eolLine _defaultTiles = "";
 /*local function prototypes*/
 
 
 /*function definitions*/
+
+void editor_workspace_show_mouse_over_tile(eolWindow *workspace,eolBool show)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return;
+  wsData->drawMouseTile = show;
+}
+
 
 void editor_workspace_clear_updated(eolWindow *workspace)
 {
@@ -63,6 +76,7 @@ void editor_workspace_save_level(eolWindow *workspace)
 
 eolLevel *editor_workspace_new_level()
 {
+  eolConfig *conf;
   eolLevel *level = NULL;
   eolLevelLayer *layer = NULL;
   eolBackground *back = NULL;
@@ -91,6 +105,19 @@ eolLevel *editor_workspace_new_level()
   eol_orientation_clear(&layer->clipMaskOri);
   
   eol_rectf_set(&layer->bounds, -10, -10, 20, 40);
+
+  conf = eol_config_load("system/editor.cfg");
+  if (conf)
+  {
+    if (eol_config_get_line_by_tag(_defaultTiles,conf,"defaultTiles"))
+    {
+      eol_level_load_tile_set(level,_defaultTiles);
+    }
+    eol_config_free(&conf);
+  }
+
+  layer->tileMap = eol_tile_map_new();
+  layer->tileMap->tileSet = level->tileSet;
   
   eol_level_setup(level);
   eol_level_set_active_layer(level, 0);
@@ -113,6 +140,11 @@ void editor_workspace_create_new_level(eolWindow *workspace)
   wsData->activeLayer = eol_level_get_layer_n(wsData->level,0);
   wsData->modified = eolFalse;
   wsData->updated = eolTrue;
+}
+
+eolBool editor_workspace_mouse_click(eolWindow *workspace)
+{
+  return eol_window_mouse_inside(workspace);
 }
 
 eolLevel * editor_workspace_get_level(eolWindow *workspace)
@@ -279,6 +311,45 @@ eolBackground *editor_workspace_get_background(eolWindow *workspace,eolUint inde
   return eol_level_get_background(wsData->activeLayer,index);
 }
 
+/* tiles */
+
+eolTileType *editor_workspace_get_tile_by_id(eolWindow *workspace,eolUint typeId)
+{
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if (!wsData)return NULL;
+  return eol_level_get_tile_set_by_id(wsData->level,typeId);
+}
+
+void editor_workspace_add_mouse_tile(eolWindow *workspace,eolUint tileIndex)
+{
+  eolUint x,y;
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(workspace);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  if (wsData->activeLayer->tileMap == NULL)
+  {
+    eol_logger_message(
+      EOL_LOG_ERROR,
+      "editor_workspace_add_mouse_tile: no tile map ");
+    return;
+  }
+  if (!eol_tile_get_tilexy_by_mouse(wsData->activeLayer->tileMap, wsData->activeLayer->ori, &x, &y))
+  {
+    eol_logger_message(
+      EOL_LOG_ERROR,
+      "editor_workspace_add_mouse_tile: not adding tile, mouse not in map");
+    return;
+  }
+  if (!eol_tile_add_to_map(wsData->activeLayer->tileMap,x, y,tileIndex))
+  {
+    eol_logger_message(
+      EOL_LOG_INFO,
+      "editor_workspace_add_mouse_tile: did not add a tile"
+    );
+  }
+}
+
 EditorWorkspace *editor_get_workspace(eolWindow *workspace)
 {
   if (!workspace)return NULL;
@@ -309,6 +380,48 @@ eolBool editor_workspace_update(eolWindow *win,GList *updates)
   return eolFalse;
 }
 
+void editor_workspace_draw_mouse_tile(eolWindow *win)
+{
+  eolOrientation ori;
+  eolVec3D mousePosition;
+  eolQuad3D quad;
+  eolRectFloat tileRect;
+  EditorWorkspace *wsData;
+  wsData = editor_get_workspace(win);
+  if ((!wsData)||(!wsData->activeLayer))return;
+  if (!wsData->drawMouseTile)return;
+
+  eol_orientation_copy(&ori,wsData->activeLayer->ori);
+
+  ori.color.x *= 1; 
+  ori.color.y *= 0;
+  ori.color.z *= 1;
+  
+  quad = eol_tile_map_get_bounding_quad(wsData->activeLayer->tileMap);
+
+  /*apply bounding quad orientation*/
+  eol_3d_op_transform_quad_by_ori(&quad, quad,ori);
+
+  if (!eol_mouse_get_quad3d_intersect(&mousePosition,quad))
+  {
+    return;
+  }
+  
+  eol_draw_dot_3D(mousePosition,
+                  8,
+                  eol_vec3d(1,0,1),
+                  1);
+
+  eol_3d_op_transform_vec3d_inverse_by_ori(&mousePosition, mousePosition,ori);
+  
+  if (!eol_tile_map_get_tile_rect(wsData->activeLayer->tileMap,&tileRect,eol_vec2d(mousePosition.x,mousePosition.y)))
+  {
+    return;
+  }
+  
+  eol_draw_rect_3D(tileRect, 2, ori);
+}
+
 void editor_workspace_draw(eolWindow *win)
 {
   glPushMatrix();
@@ -316,6 +429,8 @@ void editor_workspace_draw(eolWindow *win)
   eol_camera_setup();
   
   eol_level_draw_current();
+  
+  editor_workspace_draw_mouse_tile(win);
   
   eol_entity_draw_all();
     
@@ -357,8 +472,13 @@ eolWindow *editor_workspace()
   if (conf)
   {
     eol_config_get_line_by_tag(data->path,conf,"defaultPath");
+    eol_config_get_vec3d_by_tag(&data->selectColor,conf,"selectColor");
+    eol_config_get_vec3d_by_tag(&data->mouseOverColor,conf,"mouseOverColor");
+    eol_config_free(&conf);
   }
+  eol_level_enable_tile_grid_draw(eolFalse);
   eol_camera_config();
   eol_camera_init();
+  printf("workspace Rect: %i,%i,%i,%i\n",win->rect.x,win->rect.y,win->rect.w,win->rect.h);
   return win;
 }

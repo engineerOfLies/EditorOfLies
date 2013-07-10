@@ -28,30 +28,25 @@ components:
       - type:       BUTTON
         name:       new_background
         id:         1
-        justify:    CENTER
         buttonText: New Background
         buttonType: TEXT
       - type:       BUTTON
         name:       move_background_up
         id:         2
-        justify:    CENTER
         buttonText: Move Background Up
         buttonType: TEXT
       - type:       BUTTON
         name:       move_background_down
         id:         3
-        justify:    CENTER
         buttonText: Move Background Down
         buttonType: TEXT
       - type:       BUTTON
         name:       delete_background
         id:         4
-        justify:    CENTER
         buttonText: Delete Background
         buttonType: TEXT
       - type:       BUTTON
         name:       hide_background
         id:         7
-        justify:    CENTER
         buttonText: Hide Background
         buttonType: TEXT

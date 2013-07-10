@@ -2,6 +2,8 @@
 #include "editor_layer_panel.h"
 #include "editor_background_panel.h"
 #include "editor_orientation_edit.h"
+#include "editor_tile_panel.h"
+#include "editor_workspace.h"
 
 #include <eol_dialog.h>
 #include <eol_logger.h>
@@ -52,6 +54,7 @@ void editor_panel_show(eolEditorPanelData *data,eolUint panel)
       break;
     case eolPanelModeTile:
       eol_label_set_text(data->titleLabel,"Tile Editor");
+      editor_tile_workspace_sync(data->childwindow[eolPanelModeTile]);
       break;
     case eolPanelModeMask:
       eol_label_set_text(data->titleLabel,"Mask Editor");
@@ -66,6 +69,8 @@ void editor_panel_hide_all(eolEditorPanelData *data)
 {
   int i;
   if (!data)return;
+  editor_workspace_show_mouse_over_tile(data->workspace,eolFalse);
+  eol_level_enable_tile_grid_draw(eolFalse);
   for (i = 0; i < eolPanelModeMax;i++)
   {
     eol_window_hide(data->childwindow[i]);
@@ -143,12 +148,15 @@ void editor_panel_window(eolWindow *workspace)
   
   data->childwindow[eolPanelModeLayer] = editor_layer_panel(workspace);
   data->childwindow[eolPanelModeBackground] = editor_background_panel(workspace);
+  data->childwindow[eolPanelModeTile] = editor_tile_panel(workspace);
+  
   data->workspace = workspace;
   data->orientationEditor = editor_orientation_edit();
   data->titleLabel = eol_window_get_component_by_name(win,"title");
   
   editor_layer_setup_ori_edit(data->childwindow[eolPanelModeLayer],data->orientationEditor );
   editor_background_setup_ori_edit(data->childwindow[eolPanelModeBackground],data->orientationEditor );
+  editor_tile_setup_ori_edit(data->childwindow[eolPanelModeTile],data->orientationEditor );
   
   editor_panel_show(data,eolPanelModeLayer);
 }
