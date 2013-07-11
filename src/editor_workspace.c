@@ -69,6 +69,7 @@ void editor_workspace_save_level(eolWindow *workspace)
   wsData = editor_get_workspace(workspace);
   if (!wsData)return;
   snprintf(filepath,EOLTEXTLEN,"%s/%s",wsData->path,wsData->filename);
+  eol_logger_message(EOL_LOG_WARN,"editor_workspace_save_level: saving level:\n%s",filepath);
   eol_level_save(filepath,wsData->level);
 
   wsData->modified = eolFalse;
@@ -164,6 +165,8 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   wsData = editor_get_workspace(workspace);
 
   eol_level_free(&wsData->level);
+  eol_logger_message(EOL_LOG_WARN,"editor_workspace_load_level: loading level:\n%s",filename);
+  
   loadingLevel = eol_level_load(filename);
   if (loadingLevel);
   wsData->activeLayer = NULL;
@@ -171,8 +174,8 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   wsData->modified = eolFalse;
   wsData->updated = eolTrue;
   eol_level_setup(loadingLevel);
-  eol_level_set_active_layer(loadingLevel, 0);
   eol_level_set_current_level(loadingLevel);
+  wsData->activeLayer = eol_level_get_layer_n(loadingLevel,loadingLevel->active);
 }
 
 eolLevelLayer *editor_workspace_get_layer(eolWindow *workspace,eolUint layerIndex)
@@ -479,6 +482,5 @@ eolWindow *editor_workspace()
   eol_level_enable_tile_grid_draw(eolFalse);
   eol_camera_config();
   eol_camera_init();
-  printf("workspace Rect: %i,%i,%i,%i\n",win->rect.x,win->rect.y,win->rect.w,win->rect.h);
   return win;
 }
