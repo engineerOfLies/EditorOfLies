@@ -89,21 +89,28 @@ eolLevel *editor_workspace_new_level()
     eol_level_free(&level);
     return NULL;
   }
+  eol_word_cpy(level->idName,"test_level");
+  eol_word_cpy(layer->idName,"test_layer");
+
+  
   back = eol_level_add_background_to_layer(layer);
   if (!back)
   {
     eol_level_free(&level);
     return NULL;
   }
-  eol_word_cpy(level->idName,"test_level");
-  eol_word_cpy(layer->idName,"test_layer");
   eol_orientation_clear(&back->ori);
-  
   eol_line_cpy(back->modelFile,"models/testlevel.actor");
-  
-  eol_line_cpy(layer->clipMeshFile,"models/levelmesh/testlevel_mask.obj");
-  
-  eol_orientation_clear(&layer->clipMaskOri);
+
+  back = eol_level_add_background_to_layer(layer);
+  if (!back)
+  {
+    eol_level_free(&level);
+    return NULL;
+  }
+  eol_orientation_clear(&back->ori);
+  back->useAsClip = eolTrue;
+  eol_line_cpy(back->modelFile,"models/testclip.actor");
   
   eol_rectf_set(&layer->bounds, -10, -10, 20, 40);
 
@@ -118,11 +125,9 @@ eolLevel *editor_workspace_new_level()
   }
 
   layer->tileMap = eol_tile_map_new();
-  layer->tileMap->tileSet = level->tileSet;
   
-  eol_level_setup(level);
   eol_level_set_active_layer(level, 0);
-  eol_level_set_current_level(level);
+  eol_level_setup(level);
   return level;
 }
 
@@ -174,7 +179,6 @@ void editor_workspace_load_level(eolWindow *workspace,eolLine filename)
   wsData->modified = eolFalse;
   wsData->updated = eolTrue;
   eol_level_setup(loadingLevel);
-  eol_level_set_current_level(loadingLevel);
   wsData->activeLayer = eol_level_get_layer_n(loadingLevel,loadingLevel->active);
 }
 

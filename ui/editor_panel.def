@@ -62,15 +62,6 @@ components:
       buttonHit:    images/UI/tiles_btn_hit.png
       buttonType:   CUSTOM
     - type:         BUTTON
-      name:         mask_button
-      id:           4
-      hotkey:       4
-      justify:      LEFT
-      buttonImage:  images/UI/mask_btn.png
-      buttonHigh:   images/UI/mask_btn_high.png
-      buttonHit:    images/UI/mask_btn_hit.png
-      buttonType:   CUSTOM
-    - type:         BUTTON
       name:         spawn_button
       id:           5
       hotkey:       5
