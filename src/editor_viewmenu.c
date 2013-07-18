@@ -1,6 +1,7 @@
 #include "editor_viewmenu.h"
 #include "editor_workspace.h"
 
+#include <eol_level.h>
 #include <eol_dialog.h>
 #include <eol_input.h>
 #include <eol_logger.h>
@@ -31,11 +32,55 @@ eolBool editor_view_menu_update(eolWindow *win,GList *updates)
       {
         if (l->data == NULL)continue;
         item = (eolComponent *)l->data;
-        if (eol_line_cmp(item->name,"new_button")==0)
+        if (eol_line_cmp(item->name,"drawBackgrounds")==0)
         {
+          if (eol_component_check_get_state(item) == eolCheckUnchecked)
+          {
+            eol_level_enable_background_draw(eolFalse);
+          }
+          else
+          {
+            eol_level_enable_background_draw(eolTrue);
+          }
           return eolTrue;
         }
-
+        else if (eol_line_cmp(item->name,"drawMask")==0)
+        {
+          if (eol_component_check_get_state(item) == eolCheckUnchecked)
+          {
+            eol_level_enable_collision_draw(eolFalse);
+          }
+          else
+          {
+            eol_level_enable_collision_draw(eolTrue);
+          }
+          return eolTrue;
+        }
+        else if (eol_line_cmp(item->name,"drawTileGrid")==0)
+        {
+          if (eol_component_check_get_state(item) == eolCheckUnchecked)
+          {
+            eol_level_enable_tile_grid_draw(eolFalse);
+          }
+          else
+          {
+            eol_level_enable_tile_grid_draw(eolTrue);
+          }
+          return eolTrue;
+        }
+        else if (eol_line_cmp(item->name,"drawTiles")==0)
+        {
+          if (eol_component_check_get_state(item) == eolCheckUnchecked)
+          {
+            eol_level_enable_tile_draw(eolFalse);
+          }
+          else
+          {
+            eol_level_enable_tile_draw(eolTrue);
+          }
+          return eolTrue;
+        }
+        
       }
     }
   }

@@ -171,7 +171,6 @@ void editor_tile_workspace_sync(eolWindow *win)
     }
     eol_list_add_actor_item(list,tileType->id,tileType->actorFile);
   }
-  eol_level_enable_tile_grid_draw(eolTrue);
 }
 
 void editor_tile_panel_draw(eolWindow *win)

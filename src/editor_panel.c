@@ -70,7 +70,6 @@ void editor_panel_hide_all(eolEditorPanelData *data)
   int i;
   if (!data)return;
   editor_workspace_show_mouse_over_tile(data->workspace,eolFalse);
-  eol_level_enable_tile_grid_draw(eolFalse);
   for (i = 0; i < eolPanelModeMax;i++)
   {
     eol_window_hide(data->childwindow[i]);

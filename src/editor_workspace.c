@@ -483,7 +483,6 @@ eolWindow *editor_workspace()
     eol_config_get_vec3d_by_tag(&data->mouseOverColor,conf,"mouseOverColor");
     eol_config_free(&conf);
   }
-  eol_level_enable_tile_grid_draw(eolFalse);
   eol_camera_config();
   eol_camera_init();
   return win;

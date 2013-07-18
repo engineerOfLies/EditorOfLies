@@ -4,7 +4,7 @@ name:         view_menu
 #bottom by the number.  so rect.x = -100 means to draw x = screen.w - x
 # width or height of 0 means fill screen.  Anything less than 0 means 
 # full screen less than the width specified
-rect:         0.085,54,150,180
+rect:         0.085,54,250,180
 canHasFocus:  True
 drawGeneric:  True
 passesInput:  False
@@ -15,21 +15,43 @@ components:
     allowSelection:   false
     backgroundAlpha:  0
     id:               1000
-    rect:             0.01,0.01,0.99,0.99
+    rect:             0.01,0.02,220,0.96
     showVSlider:      true
     showHSlider:      false
     items:
-      - type:       BUTTON
-        name:       new_button
-        id:         1
-        hotkey:     n
-        hotkeymod:  LAlt
-        buttonText: New Level
-        buttonType: TEXT
-      - type:       BUTTON
-        name:       save_button
-        id:         2
-        hotkey:     s
-        hotkeymod:  LCtrl
-        buttonText: Save Level
-        buttonType: TEXT
+      - type:         CHECK
+        name:         drawBackgrounds
+        checkText:    "Draw Backgrounds"
+        uncheckText:  "Draw Backgrounds"
+        drawLabel:    true
+        state:        checked
+      - type:         CHECK
+        name:         drawMask
+        checkText:    "Draw Collision Masks"
+        uncheckText:  "Draw Collision Masks"
+        drawLabel:    true
+        state:        checked
+      - type:         CHECK
+        name:         drawTileGrid
+        checkText:    "Draw Tile Grid"
+        uncheckText:  "Draw Tile Grid"
+        drawLabel:    true
+        state:        checked
+      - type:         CHECK
+        name:         drawTiles
+        checkText:    "Draw Tiles"
+        uncheckText:  "Draw Tiles"
+        drawLabel:    true
+        state:        checked
+      - type:         CHECK
+        name:         drawTransitionRegions
+        checkText:    "Draw Regions"
+        uncheckText:  "Draw Regions"
+        drawLabel:    true
+        state:        checked
+      - type:         CHECK
+        name:         drawLevelObjects
+        checkText:    "Draw Level Objects"
+        uncheckText:  "Draw Level Objects"
+        drawLabel:    true
+        state:        checked
